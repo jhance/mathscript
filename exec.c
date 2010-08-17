@@ -7,9 +7,11 @@
 
 static symtable table;
 
-void exec_statements(struct statement_node* list) {
+void exec_prepare() {
     table = symtable_init();
+}
 
+void exec_statements(struct statement_node* list) {
     struct statement_node* cur = list;
     while(cur != NULL) {
         exec_statement(cur);

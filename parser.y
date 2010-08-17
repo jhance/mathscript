@@ -160,6 +160,7 @@ yyerror(const char* str) {
 
 int main() {
     yyparse();
+    exec_prepare();
     exec_statements(statement_list->start);
     return 0;
 }

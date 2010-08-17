@@ -84,6 +84,7 @@ struct statement_list {
 /* Called from parser after it finishes parsing to execute everything
  * Can also be used to execute inner statements/expressions
  */
+void exec_prepare();
 int exec_statement(struct statement_node* s);
 void exec_statements(struct statement_node* list);
 
