@@ -9,6 +9,7 @@
 #define TYPE_ADD            5
 #define TYPE_SUBTRACT       6
 #define TYPE_MULTIPLY       7
+#define TYPE_PARENS         8
 
 struct function_call {
     char* identifier;
@@ -43,6 +44,10 @@ struct multiply {
     struct statement_node* expr_right;
 };
 
+struct parens {
+    struct statement_node* expr;
+};
+
 union statement_info {
     struct function_call* function_call;
     struct set_variable* set_variable;
@@ -51,6 +56,7 @@ union statement_info {
     struct add* add;
     struct subtract* subtract;
     struct multiply* multiply;
+    struct parens* parens;
 };
 
 struct statement_node {
@@ -83,6 +89,8 @@ void new_subtract(struct statement_node* list,
                   struct subtract* subtract);
 void new_multiply(struct statement_node* list,
                   struct multiply* multiply);
+void new_parens(struct statement_node* list,
+                struct parens* parens);
 
 /* Called from the executer to actually execute a statement node */
 int exec_function_call(struct function_call* function_call);
@@ -92,5 +100,6 @@ int exec_get_value(struct get_value* get_value);
 int exec_add(struct add* add);
 int exec_subtract(struct subtract* subtract);
 int exec_multiply(struct multiply* multiply);
+int exec_parens(struct parens* parens);
 
 #endif

@@ -95,6 +95,17 @@ expression:
 
         $<statement_val>$ = expr;
     }
+    |
+    '(' expression ')' {
+        struct parens* p = xmalloc(sizeof(struct parens));
+        p->expr = $2;
+
+        struct statement_node* expr = statement_node_init();
+        expr->type = TYPE_PARENS;
+        expr->data.parens = p;
+
+        $<statement_val>$ = expr;
+    }
     ;
 
 set_variable:

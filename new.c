@@ -68,3 +68,12 @@ void new_multiply(struct statement_node* list,
 
     list->next = new;
 }
+
+void new_parens(struct statement_node* list,
+                struct parens* parens) {
+    struct statement_node* new = statement_node_init();
+    new->type = TYPE_PARENS;
+    new->data.parens = parens;
+
+    list->next = new;
+}

@@ -35,6 +35,8 @@ int exec_statement(struct statement_node* s) {
             return exec_subtract(s->data.subtract);
         case TYPE_MULTIPLY:
             return exec_multiply(s->data.multiply);
+        case TYPE_PARENS:
+            return exec_parens(s->data.parens);
     }
 
     fprintf(stderr, "Error: Invalid statement\n");
@@ -88,4 +90,8 @@ int exec_multiply(struct multiply* multiply) {
     int val_right = exec_statement(multiply->expr_right);
 
     return val_left * val_right;
+}
+
+int exec_parens(struct parens* parens) {
+    return exec_statement(parens->expr);
 }
