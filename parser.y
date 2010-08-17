@@ -109,8 +109,7 @@ expression:
     ;
 
 set_variable:
-    T_VARIABLE_IDENTIFIER '=' expression
-    {
+    T_VARIABLE_IDENTIFIER '=' expression {
         struct set_variable* s = xmalloc(sizeof(struct set_variable));
         s->identifier = $1;
         s->expr = $3;
@@ -122,8 +121,7 @@ set_variable:
     ;
 
 print:
-    T_PRINT '[' expression ']'
-    {
+    T_PRINT '[' expression ']' {
         struct function_call* call = xmalloc(sizeof(struct function_call));
         call->identifier = "print";
         call->args = xmalloc(sizeof(struct statement_node));
