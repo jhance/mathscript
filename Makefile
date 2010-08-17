@@ -19,7 +19,7 @@ mathscript: $(OBJECTS)
 	@$(CC) -c $< -o $@
 
 new.o: mathscript.h xmalloc.h
-exec.o: mathscript.h xmalloc.h
+exec.o: mathscript.h xmalloc.h symtable.h
 symtable.o: xmalloc.h
 
 # FLEX/BISON
