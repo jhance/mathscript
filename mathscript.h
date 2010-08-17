@@ -69,6 +69,11 @@ struct statement_node {
     union statement_info data;
 };
 
+struct statement_list {
+    struct statement_node* start;
+    struct statement_node* end;
+};
+
 /* Called from parser after it finishes parsing to execute everything
  * Can also be used to execute inner statements/expressions
  */
@@ -77,22 +82,15 @@ void exec_statements(struct statement_node* list);
 
 /* Called from parser to create new statement nodes in the list */
 struct statement_node* statement_node_init();
-void new_function_call(struct statement_node* list, 
-                       struct function_call* function_call);
-void new_set_variable(struct statement_node* list,
-                      struct set_variable* set_variable);
-void new_get_variable(struct statement_node* list,
-                      struct get_variable* get_variable);
-void new_get_value(struct statement_node* list,
-                   struct get_value* get_value);
-void new_add(struct statement_node* list,
-             struct add* add);
-void new_subtract(struct statement_node* list,
-                  struct subtract* subtract);
-void new_multiply(struct statement_node* list,
-                  struct multiply* multiply);
-void new_parens(struct statement_node* list,
-                struct parens* parens);
+struct statement_list* statement_list_init();
+struct statement_node* new_function_call(struct function_call* function_call);
+struct statement_node* new_set_variable(struct set_variable* set_variable);
+struct statement_node* new_get_variable(struct get_variable* get_variable);
+struct statement_node* new_get_value(struct get_value* get_value);
+struct statement_node* new_add(struct add* add);
+struct statement_node* new_subtract(struct subtract* subtract);
+struct statement_node* new_multiply(struct multiply* multiply);
+struct statement_node* new_parens(struct parens* parens);
 
 /* Called from the executer to actually execute a statement node */
 int exec_function_call(struct function_call* function_call);

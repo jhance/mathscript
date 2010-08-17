@@ -6,74 +6,76 @@ struct statement_node* statement_node_init() {
     return xmalloc(sizeof(struct statement_node));
 }
 
-void new_function_call(struct statement_node* list,
-                       struct function_call* function_call) {
+struct statement_list* statement_list_init() {
+    struct statement_list* l = xmalloc(sizeof(struct statement_list));
+    struct statement_node* s = xmalloc(sizeof(struct statement_node));
+    s->type = TYPE_ROOT;
+    l->start = s;
+    l->end = s;
+
+    return l;
+}
+
+struct statement_node* new_function_call(struct function_call* function_call) {
     struct statement_node* new = statement_node_init();
     new->type = TYPE_FUNCTION_CALL;
     new->data.function_call = function_call;
 
-    list->next = new;
+    return new;
 }
 
-void new_set_variable(struct statement_node* list,
-                      struct set_variable* set_variable) {
+struct statement_node* new_set_variable(struct set_variable* set_variable) {
     struct statement_node* new = statement_node_init();
     new->type = TYPE_SET_VARIABLE;
     new->data.set_variable = set_variable;
 
-    list->next = new;
+    return new;
 }
 
-void new_get_variable(struct statement_node* list,
-                      struct get_variable* get_variable) {
+struct statement_node* new_get_variable(struct get_variable* get_variable) {
     struct statement_node* new = statement_node_init();
     new->type = TYPE_GET_VARIABLE;
     new->data.get_variable = get_variable;
 
-    list->next = new;
+    return new;
 }
 
-void new_get_value(struct statement_node* list,
-                   struct get_value* get_value) {
+struct statement_node* new_get_value(struct get_value* get_value) {
     struct statement_node* new = statement_node_init();
     new->type = TYPE_GET_VALUE;
     new->data.get_value = get_value;
 
-    list->next = new;
+    return new;
 }
 
-void new_add(struct statement_node* list,
-             struct add* add) {
+struct statement_node* new_add(struct add* add) {
     struct statement_node* new = statement_node_init();
     new->type = TYPE_ADD;
     new->data.add = add;
 
-    list->next = new;
+    return new;
 }
 
-void new_subtract(struct statement_node* list,
-                  struct subtract* subtract) {
+struct statement_node* new_subtract(struct subtract* subtract) {
     struct statement_node* new = statement_node_init();
     new->type = TYPE_SUBTRACT;
     new->data.subtract = subtract;
 
-    list->next = new;
+    return new;
 }
 
-void new_multiply(struct statement_node* list,
-                  struct multiply* multiply) {
+struct statement_node* new_multiply(struct multiply* multiply) {
     struct statement_node* new = statement_node_init();
     new->type = TYPE_MULTIPLY;
     new->data.multiply = multiply;
 
-    list->next = new;
+    return new;
 }
 
-void new_parens(struct statement_node* list,
-                struct parens* parens) {
+struct statement_node* new_parens(struct parens* parens) {
     struct statement_node* new = statement_node_init();
     new->type = TYPE_PARENS;
     new->data.parens = parens;
 
-    list->next = new;
+    return new;
 }

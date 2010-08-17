@@ -29,7 +29,7 @@ parser.tab.c parser.tab.h: parser.y mathscript.h
 
 parser.tab.o: parser.tab.c
 	@echo "   CC    parser.tab.o"
-	@gcc -c parser.tab.c -o parser.tab.o
+	@gcc -g -c parser.tab.c -o parser.tab.o
 
 lex.yy.c: lexer.l
 	@echo "   FLEX  lex.yy.c"
@@ -37,7 +37,7 @@ lex.yy.c: lexer.l
 
 lex.yy.o: lex.yy.c parser.tab.h
 	@echo "   CC    lex.yy.o"
-	@gcc -c lex.yy.c -o lex.yy.o
+	@gcc -g -c lex.yy.c -o lex.yy.o
 
 
 # Fake rules

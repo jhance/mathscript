@@ -1,16 +1,17 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
 #include "mathscript.h"
 #include "xmalloc.h"
 
-struct statement_node* statement_list_start;
-struct statement_node* statement_list_cur;
+struct statement_list* statement_list;
 %}
 
 %union {
     int int_val;
     char char_val;
-    struct statement_node* statement_val;
+    struct statement_node* statement_node_val;
+    struct statement_list* statement_list_val;
 }
 
 %token <char_val> T_VARIABLE_IDENTIFIER
@@ -21,20 +22,45 @@ struct statement_node* statement_list_cur;
 %left '+' '-'
 %left '*'
 
-%type <statement_val> expression
-
-%start commands
+%type <statement_node_val> expression
+%type <statement_node_val> statement
+%type <statement_list_val> statements
 
 %%
 
-commands: /* empty */
-    | commands command ';'
+main:
+    statements {
+        statement_list = $1
+    }
+
+statements: 
+    /* empty */ {
+        $$ = statement_list_init();
+    }
+    | statements statement ';' {
+        $1->end->next = $2;
+        $1->end = $2;
+        $$ = $1;
+    }
     ;
 
-command:
-    print
+statement:
+    T_PRINT '[' expression ']' {
+        struct function_call* call = xmalloc(sizeof(struct function_call));
+        call->identifier = "print";
+        call->args = xmalloc(sizeof(struct statement_node));
+        call->args[0] = *$3;
+
+        $$ = new_function_call(call);
+    }
     |
-    set_variable
+    T_VARIABLE_IDENTIFIER '=' expression {
+        struct set_variable* s = xmalloc(sizeof(struct set_variable));
+        s->identifier = $1;
+        s->expr = $3;
+
+        $$ = new_set_variable(s);
+    }
     ;
 
 expression:
@@ -46,7 +72,7 @@ expression:
         expr->type = TYPE_GET_VALUE;
         expr->data.get_value = g;
 
-        $<statement_val>$ = expr;
+        $$ = expr;
     }
     |
     T_VARIABLE_IDENTIFIER {
@@ -57,7 +83,7 @@ expression:
         expr->type = TYPE_GET_VARIABLE;
         expr->data.get_variable = g;
 
-        $<statement_val>$ = expr;
+        $$ = expr;
     }
     |
     expression '+' expression {
@@ -69,7 +95,7 @@ expression:
         expr->type = TYPE_ADD;
         expr->data.add = a;
 
-        $<statement_val>$ = expr;
+        $$ = expr;
     }
     |
     expression '-' expression {
@@ -81,7 +107,7 @@ expression:
         expr->type = TYPE_SUBTRACT;
         expr->data.subtract = s;
 
-        $<statement_val>$ = expr;
+        $$ = expr;
     }
     |
     expression '*' expression {
@@ -93,7 +119,7 @@ expression:
         expr->type = TYPE_MULTIPLY;
         expr->data.multiply = m;
 
-        $<statement_val>$ = expr;
+        $$ = expr;
     }
     |
     '(' expression ')' {
@@ -104,44 +130,19 @@ expression:
         expr->type = TYPE_PARENS;
         expr->data.parens = p;
 
-        $<statement_val>$ = expr;
+        $$ = expr;
     }
     ;
 
-set_variable:
-    T_VARIABLE_IDENTIFIER '=' expression {
-        struct set_variable* s = xmalloc(sizeof(struct set_variable));
-        s->identifier = $1;
-        s->expr = $3;
-
-        new_set_variable(statement_list_cur, s);
-        
-        statement_list_cur = statement_list_cur->next;
-    }
-    ;
-
-print:
-    T_PRINT '[' expression ']' {
-        struct function_call* call = xmalloc(sizeof(struct function_call));
-        call->identifier = "print";
-        call->args = xmalloc(sizeof(struct statement_node));
-        call->args[0] = *$3;
-        new_function_call(statement_list_cur, call);
-
-        statement_list_cur = statement_list_cur->next;
-    }
-    ;
 %%
 
 yyerror(const char* str) {
     fprintf(stderr, "Error: %s\n", str);
+    exit(1);
 }
 
 int main() {
-    statement_list_start = statement_node_init();
-    statement_list_start->type = TYPE_ROOT;
-    statement_list_cur = statement_list_start;
     yyparse();
-    exec_statements(statement_list_start);
+    exec_statements(statement_list->start);
     return 0;
 }
