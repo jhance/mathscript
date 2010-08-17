@@ -1,0 +1,6 @@
+/mathscript
+/*.yy.*
+/*.tab.*
+/*.o
+/parser.output
+
