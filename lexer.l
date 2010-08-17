@@ -10,6 +10,8 @@
 %%
 
 [0-9]+      yylval.int_val = atoi(yytext); return T_INTEGER;
+True        yylval.int_val = 1; return T_INTEGER;
+False       yylval.int_val = 0; return T_INTEGER;
 Print       return T_PRINT;
 If          return T_IF;
 [a-z]       yylval.char_val = yytext[0]; return T_VARIABLE_IDENTIFIER;
