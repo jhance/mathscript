@@ -22,8 +22,11 @@ struct statement_list* statement_list;
 
 %left '+' '-'
 %left '*'
+%left T_COMPARE_G T_COMPARE_GE T_COMPARE_L T_COMPARE_LE T_COMPARE_E
+      T_COMPARE_NE
 
 %type <statement_node_val> expression
+%type <statement_node_val> comparison
 %type <statement_node_val> statement
 %type <statement_node_val> block
 %type <statement_list_val> statements
@@ -148,6 +151,58 @@ expression:
         expr->data.parens = p;
 
         $$ = expr;
+    }
+    |
+    comparison
+    ;
+
+comparison:
+    expression T_COMPARE_G expression {
+        struct compare_g* c = xmalloc(sizeof(struct compare_g));
+        c->expr_left = $1;
+        c->expr_right = $3;
+
+        $$ = new_compare_g(c);
+    }
+    |
+    expression T_COMPARE_GE expression {
+        struct compare_ge* c = xmalloc(sizeof(struct compare_ge));
+        c->expr_left = $1;
+        c->expr_right = $3;
+
+        $$ = new_compare_ge(c);
+    }
+    |
+    expression T_COMPARE_L expression {
+        struct compare_l* c = xmalloc(sizeof(struct compare_l));
+        c->expr_left = $1;
+        c->expr_right = $3;
+
+        $$ = new_compare_l(c);
+    }
+    |
+    expression T_COMPARE_LE expression {
+        struct compare_le* c = xmalloc(sizeof(struct compare_le));
+        c->expr_left = $1;
+        c->expr_right = $3;
+
+        $$ = new_compare_le(c);
+    }
+    |
+    expression T_COMPARE_E expression {
+        struct compare_e* c = xmalloc(sizeof(struct compare_e));
+        c->expr_left = $1;
+        c->expr_right = $3;
+
+        $$ = new_compare_e(c);
+    }
+    |
+    expression T_COMPARE_NE expression {
+        struct compare_ne* c = xmalloc(sizeof(struct compare_ne));
+        c->expr_left = $1;
+        c->expr_right = $3;
+
+        $$ = new_compare_ne(c);
     }
     ;
 

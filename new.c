@@ -80,6 +80,54 @@ struct statement_node* new_parens(struct parens* parens) {
     return new;
 }
 
+struct statement_node* new_compare_g(struct compare_g* compare_g) {
+    struct statement_node* new = statement_node_init();
+    new->type = TYPE_COMPARE_G;
+    new->data.compare_g = compare_g;
+    
+    return new;
+}
+
+struct statement_node* new_compare_ge(struct compare_ge* compare_ge) {
+    struct statement_node* new = statement_node_init();
+    new->type = TYPE_COMPARE_GE;
+    new->data.compare_ge = compare_ge;
+    
+    return new;
+}
+
+struct statement_node* new_compare_l(struct compare_l* compare_l) {
+    struct statement_node* new = statement_node_init();
+    new->type = TYPE_COMPARE_L;
+    new->data.compare_l = compare_l;
+    
+    return new;
+}
+
+struct statement_node* new_compare_le(struct compare_le* compare_le) {
+    struct statement_node* new = statement_node_init();
+    new->type = TYPE_COMPARE_LE;
+    new->data.compare_le = compare_le;
+    
+    return new;
+}
+
+struct statement_node* new_compare_e(struct compare_e* compare_e) {
+    struct statement_node* new = statement_node_init();
+    new->type = TYPE_COMPARE_E;
+    new->data.compare_e = compare_e;
+    
+    return new;
+}
+
+struct statement_node* new_compare_ne(struct compare_ne* compare_ne) {
+    struct statement_node* new = statement_node_init();
+    new->type = TYPE_COMPARE_NE;
+    new->data.compare_ne = compare_ne;
+    
+    return new;
+}
+
 struct statement_node* new_if_statement(struct if_statement* if_statement) {
     struct statement_node* new = statement_node_init();
     new->type = TYPE_IF_STATEMENT;

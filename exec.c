@@ -39,6 +39,18 @@ int exec_statement(struct statement_node* s) {
             return exec_multiply(s->data.multiply);
         case TYPE_PARENS:
             return exec_parens(s->data.parens);
+        case TYPE_COMPARE_G:
+            return exec_compare_g(s->data.compare_g);
+        case TYPE_COMPARE_GE:
+            return exec_compare_ge(s->data.compare_ge);
+        case TYPE_COMPARE_L:
+            return exec_compare_l(s->data.compare_l);
+        case TYPE_COMPARE_LE:
+            return exec_compare_le(s->data.compare_le);
+        case TYPE_COMPARE_E:
+            return exec_compare_e(s->data.compare_e);
+        case TYPE_COMPARE_NE:
+            return exec_compare_ne(s->data.compare_ne);
         case TYPE_IF_STATEMENT:
             return exec_if_statement(s->data.if_statement);
     }
@@ -98,6 +110,48 @@ int exec_multiply(struct multiply* multiply) {
 
 int exec_parens(struct parens* parens) {
     return exec_statement(parens->expr);
+}
+
+int exec_compare_g(struct compare_g* compare_g) {
+    int val_left = exec_statement(compare_g->expr_left);
+    int val_right = exec_statement(compare_g->expr_right);
+
+    return val_left > val_right;
+}
+
+int exec_compare_ge(struct compare_ge* compare_ge) {
+    int val_left = exec_statement(compare_ge->expr_left);
+    int val_right = exec_statement(compare_ge->expr_right);
+
+    return val_left >= val_right;
+}
+
+int exec_compare_l(struct compare_l* compare_l) {
+    int val_left = exec_statement(compare_l->expr_left);
+    int val_right = exec_statement(compare_l->expr_right);
+
+    return val_left < val_right;
+}
+
+int exec_compare_le(struct compare_le* compare_le) {
+    int val_left = exec_statement(compare_le->expr_left);
+    int val_right = exec_statement(compare_le->expr_right);
+
+    return val_left <= val_right;
+}
+
+int exec_compare_e(struct compare_e* compare_e) {
+    int val_left = exec_statement(compare_e->expr_left);
+    int val_right = exec_statement(compare_e->expr_right);
+
+    return val_left == val_right;
+}
+
+int exec_compare_ne(struct compare_ne* compare_ne) {
+    int val_left = exec_statement(compare_ne->expr_left);
+    int val_right = exec_statement(compare_ne->expr_right);
+
+    return val_left != val_right;
 }
 
 int exec_if_statement(struct if_statement* if_statement) {
