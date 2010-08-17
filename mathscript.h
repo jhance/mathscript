@@ -1,15 +1,17 @@
 #ifndef MATHSCRIPT_H
 #define MATHSCRIPT_H
 
-#define TYPE_ROOT           0
-#define TYPE_FUNCTION_CALL  1
-#define TYPE_SET_VARIABLE   2
-#define TYPE_GET_VARIABLE   3
-#define TYPE_GET_VALUE      4
-#define TYPE_ADD            5
-#define TYPE_SUBTRACT       6
-#define TYPE_MULTIPLY       7
-#define TYPE_PARENS         8
+enum statement_type {
+    TYPE_ROOT,
+    TYPE_FUNCTION_CALL,
+    TYPE_SET_VARIABLE,
+    TYPE_GET_VARIABLE,
+    TYPE_GET_VALUE,
+    TYPE_ADD,
+    TYPE_SUBTRACT,
+    TYPE_MULTIPLY,
+    TYPE_PARENS
+};
 
 struct function_call {
     char* identifier;
@@ -62,7 +64,7 @@ union statement_info {
 struct statement_node {
     struct statement_node* next;
     
-    int type;
+    enum statement_type type;
 
     union statement_info data;
 };
