@@ -4,7 +4,18 @@
 #include "mathscript.h"
 #include "xmalloc.h"
 
+<<<<<<< Updated upstream
 struct statement_list* statement_list;
+=======
+static struct statement_node* statement_list_start;
+static struct statement_node* statement_list_cur;
+
+/* This is used almost as a hack until I find a better way */
+static struct statement_node* old_cur;
+static struct statement_node* new_statement_list_start;
+static void branch_statement_list();
+static void unbranch_statement_list();
+>>>>>>> Stashed changes
 %}
 
 %union {
@@ -29,6 +40,7 @@ struct statement_list* statement_list;
 
 %%
 
+<<<<<<< Updated upstream
 main:
     statements {
         statement_list = $1
@@ -43,6 +55,13 @@ statements:
         $1->end = $2;
         $$ = $1;
     }
+=======
+commands: /* empty */
+    |
+    commands command ';'
+    |
+    commands block
+>>>>>>> Stashed changes
     ;
 
 statement:
@@ -62,15 +81,26 @@ statement:
 
         $$ = new_set_variable(s);
     }
-    |
-    T_IF '[' expression ']' '{' statements '}' {
-        struct if_statement* i = xmalloc(sizeof(struct if_statement));
-        i->expr = $3;
-        i->statements = $6->start;
-
-        $$ = new_if_statement(i);
-    }
     ;
+
+block:
+    if_statement
+    ;
+
+if_statement:
+    {
+        branch_statement_list();
+    }
+    T_IF '[' expression ']' '{' commands '}' {
+        struct if_statement* i = xmalloc(sizeof(struct if_statement));
+        i->expr = $4;
+        i->statements = new_statement_list_start;
+
+        unbranch_statement_list();
+
+        new_if_statement(statement_list_cur, i);
+        statement_list_cur = statement_list_cur->next;
+    }
 
 expression:
     T_INTEGER {
@@ -154,4 +184,15 @@ int main() {
     yyparse();
     exec_statements(statement_list->start);
     return 0;
+}
+
+void branch_statement_list() {
+    old_cur = statement_list_cur;
+    statement_list_cur = statement_node_init();
+    statement_list_cur->type = TYPE_ROOT;
+    new_statement_list_start = statement_list_cur;
+}
+
+void unbranch_statement_list() {
+    statement_list_cur = old_cur;
 }

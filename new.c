@@ -79,3 +79,11 @@ struct statement_node* new_parens(struct parens* parens) {
 
     return new;
 }
+
+struct statement_node* new_if_statement(struct if_statement* if_statement) {
+    struct statement_node* new = statement_node_init();
+    new->type = TYPE_IF_STATEMENT;
+    new->data.if_statement = if_statement;
+
+    return new;
+}

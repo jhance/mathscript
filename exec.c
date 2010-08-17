@@ -37,6 +37,8 @@ int exec_statement(struct statement_node* s) {
             return exec_multiply(s->data.multiply);
         case TYPE_PARENS:
             return exec_parens(s->data.parens);
+        case TYPE_IF_STATEMENT:
+            return exec_if_statement(s->data.if_statement);
     }
 
     fprintf(stderr, "Error: Invalid statement\n");
@@ -94,4 +96,14 @@ int exec_multiply(struct multiply* multiply) {
 
 int exec_parens(struct parens* parens) {
     return exec_statement(parens->expr);
+}
+
+int exec_if_statement(struct if_statement* if_statement) {
+    if(exec_statement(if_statement->expr)) {
+        exec_statements(if_statement->statements);
+        return 1;
+    }
+    else {
+        return 0;
+    }
 }
