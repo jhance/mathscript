@@ -8,6 +8,7 @@
 #define TYPE_GET_VALUE      4
 #define TYPE_ADD            5
 #define TYPE_SUBTRACT       6
+#define TYPE_MULTIPLY       7
 
 struct function_call {
     char* identifier;
@@ -37,6 +38,11 @@ struct subtract {
     struct statement_node* expr_right;
 };
 
+struct multiply {
+    struct statement_node* expr_left;
+    struct statement_node* expr_right;
+};
+
 union statement_info {
     struct function_call* function_call;
     struct set_variable* set_variable;
@@ -44,6 +50,7 @@ union statement_info {
     struct get_value* get_value;
     struct add* add;
     struct subtract* subtract;
+    struct multiply* multiply;
 };
 
 struct statement_node {
@@ -74,6 +81,8 @@ void new_add(struct statement_node* list,
              struct add* add);
 void new_subtract(struct statement_node* list,
                   struct subtract* subtract);
+void new_multiply(struct statement_node* list,
+                  struct multiply* multiply);
 
 /* Called from the executer to actually execute a statement node */
 int exec_function_call(struct function_call* function_call);
@@ -82,5 +91,6 @@ int exec_get_variable(struct get_variable* get_variable);
 int exec_get_value(struct get_value* get_value); 
 int exec_add(struct add* add);
 int exec_subtract(struct subtract* subtract);
+int exec_multiply(struct multiply* multiply);
 
 #endif

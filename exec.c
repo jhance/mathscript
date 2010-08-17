@@ -33,6 +33,8 @@ int exec_statement(struct statement_node* s) {
             return exec_add(s->data.add);
         case TYPE_SUBTRACT:
             return exec_subtract(s->data.subtract);
+        case TYPE_MULTIPLY:
+            return exec_multiply(s->data.multiply);
     }
 
     fprintf(stderr, "Error: Invalid statement\n");
@@ -79,4 +81,11 @@ int exec_subtract(struct subtract* subtract) {
     int val_right = exec_statement(subtract->expr_right);
 
     return val_left - val_right;
+}
+
+int exec_multiply(struct multiply* multiply) {
+    int val_left = exec_statement(multiply->expr_left);
+    int val_right = exec_statement(multiply->expr_right);
+
+    return val_left * val_right;
 }

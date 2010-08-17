@@ -59,3 +59,12 @@ void new_subtract(struct statement_node* list,
 
     list->next = new;
 }
+
+void new_multiply(struct statement_node* list,
+                  struct multiply* multiply) {
+    struct statement_node* new = statement_node_init();
+    new->type = TYPE_MULTIPLY;
+    new->data.multiply = multiply;
+
+    list->next = new;
+}

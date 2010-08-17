@@ -19,6 +19,7 @@ struct statement_node* statement_list_cur;
 %token T_PRINT
 
 %left '+' '-'
+%left '*'
 
 %type <statement_val> expression
 
@@ -79,6 +80,18 @@ expression:
         struct statement_node* expr = statement_node_init();
         expr->type = TYPE_SUBTRACT;
         expr->data.subtract = s;
+
+        $<statement_val>$ = expr;
+    }
+    |
+    expression '*' expression {
+        struct multiply* m = xmalloc(sizeof(struct multiply));
+        m->expr_left = $1;
+        m->expr_right = $3;
+
+        struct statement_node* expr = statement_node_init();
+        expr->type = TYPE_MULTIPLY;
+        expr->data.multiply = m;
 
         $<statement_val>$ = expr;
     }
