@@ -53,7 +53,7 @@ struct parens {
 
 struct if_statement {
     struct statement_node* expr;
-    struct statement_node* statements;
+    struct statement_list* statements;
 };
 
 union statement_info {
@@ -86,7 +86,7 @@ struct statement_list {
  */
 void exec_prepare();
 int exec_statement(struct statement_node* s);
-void exec_statements(struct statement_node* list);
+void exec_statements(struct statement_list* list);
 
 /* Called from parser to create new statement nodes in the list */
 struct statement_node* statement_node_init();

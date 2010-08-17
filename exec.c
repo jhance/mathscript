@@ -11,8 +11,8 @@ void exec_prepare() {
     table = symtable_init();
 }
 
-void exec_statements(struct statement_node* list) {
-    struct statement_node* cur = list;
+void exec_statements(struct statement_list* list) {
+    struct statement_node* cur = list->start;
     while(cur != NULL) {
         exec_statement(cur);
         cur = cur->next;

@@ -74,7 +74,7 @@ block:
     T_IF '[' expression ']' '{' statements '}' {
         struct if_statement* i = xmalloc(sizeof(struct if_statement));
         i->expr = $3;
-        i->statements = $6->start;
+        i->statements = $6;
 
         $$ = new_if_statement(i);
     }
@@ -161,6 +161,6 @@ yyerror(const char* str) {
 int main() {
     yyparse();
     exec_prepare();
-    exec_statements(statement_list->start);
+    exec_statements(statement_list);
     return 0;
 }
