@@ -15,6 +15,7 @@ False       yylval.int_val = 0; return T_INTEGER;
 Print       return T_PRINT;
 If          return T_IF;
 While       return T_WHILE;
+For         return T_FOR;
 >           return T_COMPARE_G;
 >=          return T_COMPARE_GE;
 \<          return T_COMPARE_L;

@@ -18,7 +18,8 @@ enum statement_type {
     TYPE_COMPARE_E,
     TYPE_COMPARE_NE,
     TYPE_IF_STATEMENT,
-    TYPE_WHILE_LOOP
+    TYPE_WHILE_LOOP,
+    TYPE_FOR_LOOP
 };
 
 struct function_call {
@@ -98,6 +99,13 @@ struct while_loop {
     struct statement_list* statements;
 };
 
+struct for_loop {
+    struct statement_node* initial_statement;
+    struct statement_node* expr;
+    struct statement_node* iterator_statement;
+    struct statement_list* statements;
+};
+
 union statement_info {
     struct function_call* function_call;
     struct set_variable* set_variable;
@@ -115,6 +123,7 @@ union statement_info {
     struct compare_ne* compare_ne;
     struct if_statement* if_statement;
     struct while_loop* while_loop;
+    struct for_loop* for_loop;
 };
 
 struct statement_node {
@@ -168,6 +177,7 @@ DECLARE_NEW_FUNC(compare_e);
 DECLARE_NEW_FUNC(compare_ne);
 DECLARE_NEW_FUNC(if_statement);
 DECLARE_NEW_FUNC(while_loop);
+DECLARE_NEW_FUNC(for_loop);
 
 /* Called from the executer to actually execute a statement node
  *
@@ -193,5 +203,6 @@ DECLARE_EXEC_FUNC(compare_e);
 DECLARE_EXEC_FUNC(compare_ne);
 DECLARE_EXEC_FUNC(if_statement);
 DECLARE_EXEC_FUNC(while_loop);
+DECLARE_EXEC_FUNC(for_loop);
 
 #endif

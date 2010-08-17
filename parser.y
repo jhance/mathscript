@@ -20,6 +20,7 @@ struct statement_list* statement_list;
 %token T_PRINT
 %token T_IF
 %token T_WHILE
+%token T_FOR
 
 %left T_COMPARE_G T_COMPARE_GE T_COMPARE_L T_COMPARE_LE T_COMPARE_E
       T_COMPARE_NE
@@ -89,6 +90,16 @@ block:
         w->statements = $6;
 
         $$ = new_while_loop(w);
+    }
+    |
+    T_FOR '[' statement ';' expression ';' statement ']' '{' statements '}' {
+        struct for_loop* f = xmalloc(sizeof(struct for_loop));
+        f->initial_statement = $3;
+        f->expr = $5;
+        f->iterator_statement = $7;
+        f->statements = $10;
+
+        $$ = new_for_loop(f);
     }
     ;
 
