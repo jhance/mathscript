@@ -137,42 +137,61 @@ void exec_prepare();
 int exec_statement(struct statement_node* s);
 void exec_statements(struct statement_list* list);
 
+
 /* Called from parser to create new statement nodes in the list */
 struct statement_node* statement_node_init();
 struct statement_list* statement_list_init();
-struct statement_node* new_function_call(struct function_call* function_call);
-struct statement_node* new_set_variable(struct set_variable* set_variable);
-struct statement_node* new_get_variable(struct get_variable* get_variable);
-struct statement_node* new_get_value(struct get_value* get_value);
-struct statement_node* new_add(struct add* add);
-struct statement_node* new_subtract(struct subtract* subtract);
-struct statement_node* new_multiply(struct multiply* multiply);
-struct statement_node* new_parens(struct parens* parens);
-struct statement_node* new_compare_g(struct compare_g* compare_g);
-struct statement_node* new_compare_ge(struct compare_ge* compare_ge);
-struct statement_node* new_compare_l(struct compare_l* compare_l);
-struct statement_node* new_compare_le(struct compare_le* compare_le);
-struct statement_node* new_compare_e(struct compare_e* compare_e);
-struct statement_node* new_compare_ne(struct compare_ne* compare_ne);
-struct statement_node* new_if_statement(struct if_statement* if_statement);
-struct statement_node* new_while_loop(struct while_loop* while_loop);
 
-/* Called from the executer to actually execute a statement node */
-int exec_function_call(struct function_call* function_call);
-int exec_set_variable(struct set_variable* set_variable);
-int exec_get_variable(struct get_variable* get_variable);
-int exec_get_value(struct get_value* get_value); 
-int exec_add(struct add* add);
-int exec_subtract(struct subtract* subtract);
-int exec_multiply(struct multiply* multiply);
-int exec_parens(struct parens* parens);
-int exec_compare_g(struct compare_g* compare_g);
-int exec_compare_ge(struct compare_ge* compare_ge);
-int exec_compare_l(struct compare_l* compare_l);
-int exec_compare_le(struct compare_le* compare_le);
-int exec_compare_e(struct compare_e* compare_e);
-int exec_compare_ne(struct compare_ne* compare_ne);
-int exec_if_statement(struct if_statement* if_statement);
-int exec_while_loop(struct while_loop* while_loop);
+
+/* Declares helpers for creating nodes based on the structs
+ * See also: DEFINE_NEW_FUNC in new.c
+ *
+ * Example: 
+ * struct statement_node* new_get_value(struct get_value* get_value);
+ */
+#define DECLARE_NEW_FUNC(s) struct statement_node* new_##s(struct s* s);
+
+/* please use semicolons on the macros */
+DECLARE_NEW_FUNC(function_call);
+DECLARE_NEW_FUNC(set_variable);
+DECLARE_NEW_FUNC(get_variable);
+DECLARE_NEW_FUNC(get_value);
+DECLARE_NEW_FUNC(add);
+DECLARE_NEW_FUNC(subtract);
+DECLARE_NEW_FUNC(multiply);
+DECLARE_NEW_FUNC(parens);
+DECLARE_NEW_FUNC(compare_g);
+DECLARE_NEW_FUNC(compare_ge);
+DECLARE_NEW_FUNC(compare_l);
+DECLARE_NEW_FUNC(compare_le);
+DECLARE_NEW_FUNC(compare_e);
+DECLARE_NEW_FUNC(compare_ne);
+DECLARE_NEW_FUNC(if_statement);
+DECLARE_NEW_FUNC(while_loop);
+
+/* Called from the executer to actually execute a statement node
+ *
+ * Example:
+ * int exec_get_value(struct get_value* get_value);
+ */
+#define DECLARE_EXEC_FUNC(s) int exec_##s(struct s* s);
+
+/* please use semicolons after the macros */
+DECLARE_EXEC_FUNC(function_call);
+DECLARE_EXEC_FUNC(set_variable);
+DECLARE_EXEC_FUNC(get_variable);
+DECLARE_EXEC_FUNC(get_value);
+DECLARE_EXEC_FUNC(add);
+DECLARE_EXEC_FUNC(subtract);
+DECLARE_EXEC_FUNC(multiply);
+DECLARE_EXEC_FUNC(parens);
+DECLARE_EXEC_FUNC(compare_g);
+DECLARE_EXEC_FUNC(compare_ge);
+DECLARE_EXEC_FUNC(compare_l);
+DECLARE_EXEC_FUNC(compare_le);
+DECLARE_EXEC_FUNC(compare_e);
+DECLARE_EXEC_FUNC(compare_ne);
+DECLARE_EXEC_FUNC(if_statement);
+DECLARE_EXEC_FUNC(while_loop);
 
 #endif
