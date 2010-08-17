@@ -19,6 +19,8 @@ void exec_statements(struct statement_node* list) {
 
 int exec_statement(struct statement_node* s) {
     switch(s->type) {
+        case TYPE_ROOT:
+            return 0;
         case TYPE_FUNCTION_CALL:
             return exec_function_call(s->data.function_call);
         case TYPE_SET_VARIABLE:
@@ -29,7 +31,11 @@ int exec_statement(struct statement_node* s) {
             return exec_get_value(s->data.get_value);
         case TYPE_ADD:
             return exec_add(s->data.add);
+        case TYPE_SUBTRACT:
+            return exec_subtract(s->data.subtract);
     }
+
+    fprintf(stderr, "Error: Invalid statement\n");
 
     return 0;
 }
@@ -66,4 +72,11 @@ int exec_add(struct add* add) {
     int val_right = exec_statement(add->expr_right);
 
     return val_left + val_right;
+}
+
+int exec_subtract(struct subtract* subtract) {
+    int val_left = exec_statement(subtract->expr_left);
+    int val_right = exec_statement(subtract->expr_right);
+
+    return val_left - val_right;
 }

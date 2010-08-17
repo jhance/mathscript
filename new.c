@@ -50,3 +50,12 @@ void new_add(struct statement_node* list,
 
     list->next = new;
 }
+
+void new_subtract(struct statement_node* list,
+                  struct subtract* subtract) {
+    struct statement_node* new = statement_node_init();
+    new->type = TYPE_SUBTRACT;
+    new->data.subtract = subtract;
+
+    list->next = new;
+}

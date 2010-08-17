@@ -70,6 +70,18 @@ expression:
 
         $<statement_val>$ = expr;
     }
+    |
+    expression '-' expression {
+        struct subtract* s = xmalloc(sizeof(struct subtract));
+        s->expr_left = $1;
+        s->expr_right = $3;
+
+        struct statement_node* expr = statement_node_init();
+        expr->type = TYPE_SUBTRACT;
+        expr->data.subtract = s;
+
+        $<statement_val>$ = expr;
+    }
     ;
 
 set_variable:
