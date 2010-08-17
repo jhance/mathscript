@@ -10,7 +10,7 @@
 %%
 
 [0-9]+      yylval.int_val = atoi(yytext); return T_INTEGER;
-print       return T_PRINT;
+Print       return T_PRINT;
 \n          /* do nothing */
 [ \t]       /* do nothing */
 [a-z]       yylval.char_val = yytext[0]; return T_VARIABLE_IDENTIFIER;
