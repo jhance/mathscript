@@ -25,6 +25,7 @@ struct statement_list* statement_list;
 
 %type <statement_node_val> expression
 %type <statement_node_val> statement
+%type <statement_node_val> block
 %type <statement_list_val> statements
 
 %%
@@ -39,6 +40,11 @@ statements:
         $$ = statement_list_init();
     }
     | statements statement ';' {
+        $1->end->next = $2;
+        $1->end = $2;
+        $$ = $1;
+    }
+    | statements block {
         $1->end->next = $2;
         $1->end = $2;
         $$ = $1;
@@ -62,7 +68,9 @@ statement:
 
         $$ = new_set_variable(s);
     }
-    |
+    ;
+
+block:
     T_IF '[' expression ']' '{' statements '}' {
         struct if_statement* i = xmalloc(sizeof(struct if_statement));
         i->expr = $3;
