@@ -135,3 +135,11 @@ struct statement_node* new_if_statement(struct if_statement* if_statement) {
 
     return new;
 }
+
+struct statement_node* new_while_loop(struct while_loop* while_loop) {
+    struct statement_node* new = statement_node_init();
+    new->type = TYPE_WHILE_LOOP;
+    new->data.while_loop = while_loop;
+
+    return new;
+}

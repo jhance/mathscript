@@ -53,6 +53,8 @@ int exec_statement(struct statement_node* s) {
             return exec_compare_ne(s->data.compare_ne);
         case TYPE_IF_STATEMENT:
             return exec_if_statement(s->data.if_statement);
+        case TYPE_WHILE_LOOP:
+            return exec_while_loop(s->data.while_loop);
     }
 
     fprintf(stderr, "Error: Invalid statement\n");
@@ -162,4 +164,11 @@ int exec_if_statement(struct if_statement* if_statement) {
     else {
         return 0;
     }
+}
+
+int exec_while_loop(struct while_loop* while_loop) {
+    while(exec_statement(while_loop->expr)) {
+        exec_statements(while_loop->statements);
+    }
+    return 0;
 }

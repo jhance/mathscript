@@ -19,11 +19,12 @@ struct statement_list* statement_list;
 %token <int_val> T_INTEGER
 %token T_PRINT
 %token T_IF
+%token T_WHILE
 
-%left '+' '-'
-%left '*'
 %left T_COMPARE_G T_COMPARE_GE T_COMPARE_L T_COMPARE_LE T_COMPARE_E
       T_COMPARE_NE
+%left '+' '-'
+%left '*'
 
 %type <statement_node_val> expression
 %type <statement_node_val> comparison
@@ -80,6 +81,14 @@ block:
         i->statements = $6;
 
         $$ = new_if_statement(i);
+    }
+    |
+    T_WHILE '[' expression ']' '{' statements '}' {
+        struct while_loop* w = xmalloc(sizeof(struct while_loop));
+        w->expr = $3;
+        w->statements = $6;
+
+        $$ = new_while_loop(w);
     }
     ;
 
@@ -142,6 +151,8 @@ expression:
         $$ = expr;
     }
     |
+    comparison
+    |
     '(' expression ')' {
         struct parens* p = xmalloc(sizeof(struct parens));
         p->expr = $2;
@@ -152,8 +163,6 @@ expression:
 
         $$ = expr;
     }
-    |
-    comparison
     ;
 
 comparison:
