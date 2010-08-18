@@ -79,12 +79,12 @@ int exec_call_function(struct call_function* call_function) {
 int exec_set_variable(struct set_variable* set_variable) {
     int* val = xmalloc(sizeof(int));
     *val = exec_statement(set_variable->expr);
-    table[symtable_calc_index(set_variable->identifier)] = val;
+    symtable_set(table, set_variable->identifier, val);
     return 0;
 }
 
 int exec_get_variable(struct get_variable* get_variable) {
-    return *(int*) table[symtable_calc_index(get_variable->identifier)];
+    return *(int*) symtable_get(table, get_variable->identifier);
 }
 
 int exec_get_value(struct get_value* get_value) {
