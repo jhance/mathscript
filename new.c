@@ -27,7 +27,7 @@ struct statement_list* statement_list_init() {
     }
 
 /* please use semicolons on then end of the macros */
-DEFINE_NEW_FUNC(function_call, TYPE_FUNCTION_CALL);
+DEFINE_NEW_FUNC(call_function, TYPE_CALL_FUNCTION);
 DEFINE_NEW_FUNC(set_variable, TYPE_SET_VARIABLE);
 DEFINE_NEW_FUNC(get_variable, TYPE_GET_VARIABLE);
 DEFINE_NEW_FUNC(get_value, TYPE_GET_VALUE);

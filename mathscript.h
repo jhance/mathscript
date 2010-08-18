@@ -3,7 +3,7 @@
 
 enum statement_type {
     TYPE_ROOT,
-    TYPE_FUNCTION_CALL,
+    TYPE_CALL_FUNCTION,
     TYPE_SET_VARIABLE,
     TYPE_GET_VARIABLE,
     TYPE_GET_VALUE,
@@ -22,7 +22,7 @@ enum statement_type {
     TYPE_FOR_LOOP
 };
 
-struct function_call {
+struct call_function {
     char* identifier;
     struct statement_node* args;
 };
@@ -107,7 +107,7 @@ struct for_loop {
 };
 
 union statement_info {
-    struct function_call* function_call;
+    struct call_function* call_function;
     struct set_variable* set_variable;
     struct get_variable* get_variable;
     struct get_value* get_value;
@@ -161,7 +161,7 @@ struct statement_list* statement_list_init();
 #define DECLARE_NEW_FUNC(s) struct statement_node* new_##s(struct s* s);
 
 /* please use semicolons on the macros */
-DECLARE_NEW_FUNC(function_call);
+DECLARE_NEW_FUNC(call_function);
 DECLARE_NEW_FUNC(set_variable);
 DECLARE_NEW_FUNC(get_variable);
 DECLARE_NEW_FUNC(get_value);
@@ -187,7 +187,7 @@ DECLARE_NEW_FUNC(for_loop);
 #define DECLARE_EXEC_FUNC(s) int exec_##s(struct s* s);
 
 /* please use semicolons after the macros */
-DECLARE_EXEC_FUNC(function_call);
+DECLARE_EXEC_FUNC(call_function);
 DECLARE_EXEC_FUNC(set_variable);
 DECLARE_EXEC_FUNC(get_variable);
 DECLARE_EXEC_FUNC(get_value);

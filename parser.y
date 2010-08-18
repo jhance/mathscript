@@ -58,12 +58,12 @@ statements:
 
 statement:
     T_PRINT '[' expression ']' {
-        struct function_call* call = xmalloc(sizeof(struct function_call));
+        struct call_function* call = xmalloc(sizeof(struct call_function));
         call->identifier = "print";
         call->args = xmalloc(sizeof(struct statement_node));
         call->args[0] = *$3;
 
-        $$ = new_function_call(call);
+        $$ = new_call_function(call);
     }
     |
     T_VARIABLE_IDENTIFIER '=' expression {

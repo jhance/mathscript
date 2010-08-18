@@ -23,8 +23,8 @@ int exec_statement(struct statement_node* s) {
     switch(s->type) {
         case TYPE_ROOT:
             return 0;
-        case TYPE_FUNCTION_CALL:
-            return exec_function_call(s->data.function_call);
+        case TYPE_CALL_FUNCTION:
+            return exec_call_function(s->data.call_function);
         case TYPE_SET_VARIABLE:
             return exec_set_variable(s->data.set_variable);
         case TYPE_GET_VARIABLE:
@@ -64,14 +64,14 @@ int exec_statement(struct statement_node* s) {
     return 0;
 }
 
-int exec_function_call(struct function_call* function_call) {
-    if(strcmp(function_call->identifier, "print") == 0) {
+int exec_call_function(struct call_function* call_function) {
+    if(strcmp(call_function->identifier, "print") == 0) {
         /* By "args" its really something like &(args[0]) */
-        printf("%d\n", exec_statement(function_call->args));
+        printf("%d\n", exec_statement(call_function->args));
     }
     else {
         fprintf(stderr, 
-                "Error: No such function: %s\n", function_call->identifier);
+                "Error: No such function: %s\n", call_function->identifier);
     }
     return 0;
 }
