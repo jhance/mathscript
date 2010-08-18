@@ -7,25 +7,33 @@
 
 %}
 
+%start S_COMMENT M_COMMENT
 %%
 
-[0-9]+      yylval.int_val = atoi(yytext); return T_INTEGER;
-True        yylval.int_val = 1; return T_INTEGER;
-False       yylval.int_val = 0; return T_INTEGER;
-Print       return T_PRINT;
-If          return T_IF;
-While       return T_WHILE;
-For         return T_FOR;
->           return T_COMPARE_G;
->=          return T_COMPARE_GE;
-\<          return T_COMPARE_L;
-\<=         return T_COMPARE_LE;
-==          return T_COMPARE_E;
-!=          return T_COMPARE_NE;
-[a-z]       yylval.char_val = yytext[0]; return T_VARIABLE_IDENTIFIER;
-[A-Z]       yylval.char_val = yytext[0]; return T_FUNCTION_IDENTIFIER;
-\n          /* do nothing */
-[ \t]       /* do nothing */
-.           return (int) yytext[0];
+<INITIAL>[0-9]+     yylval.int_val = atoi(yytext); return T_INTEGER;
+<INITIAL>True       yylval.int_val = 1; return T_INTEGER;
+<INITIAL>False      yylval.int_val = 0; return T_INTEGER;
+<INITIAL>Print      return T_PRINT;
+<INITIAL>If         return T_IF;
+<INITIAL>While      return T_WHILE;
+<INITIAL>For        return T_FOR;
+<INITIAL>\>         return T_COMPARE_G;
+<INITIAL>\>=        return T_COMPARE_GE;
+<INITIAL><          return T_COMPARE_L;
+<INITIAL><=         return T_COMPARE_LE;
+<INITIAL>==         return T_COMPARE_E;
+<INITIAL>!=         return T_COMPARE_NE;
+<INITIAL>[a-z]      yylval.char_val = yytext[0]; return T_VARIABLE_IDENTIFIER;
+<INITIAL>[A-Z]      yylval.char_val = yytext[0]; return T_FUNCTION_IDENTIFIER;
+<INITIAL>\n         /* do nothing */
+<INITIAL>[ \t]      /* do nothing */
+<INITIAL>.          return (int) yytext[0];
+<INITIAL>\/\*       BEGIN M_COMMENT;
+<INITIAL>\/\/       BEGIN S_COMMENT;
 
+<M_COMMENT>\*\/     BEGIN INITIAL;
+<M_COMMENT>.        /* do nothing */
+
+<S_COMMENT>\n       BEGIN INITIAL;
+<S_COMMENT>.        /* do nothing */
 %%
