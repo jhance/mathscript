@@ -12,19 +12,20 @@ mathscript: $(OBJECTS)
 	@echo "   CCLD  mathscript"
 	@$(CC) $(OBJECTS) -lfl -o mathscript
 
-
-# Code creation/execution (C)
-%.o : %.c
-	@echo "   CC    $@"
-	@$(CC) -c $< -o $@
-
 new.o: mathscript.h xmalloc.h
 exec.o: mathscript.h xmalloc.h symtable.h
 symtable.o: xmalloc.h
 
-# FLEX/BISON
-parser.tab.c parser.tab.h: parser.y mathscript.h
-	@echo "   BISON parser.tab.y"
+parser.tab.o: mathscript.h
+
+
+#### RULES ####
+%.o : %.c
+	@echo "   CC    $@"
+	@$(CC) -c $< -o $@
+
+%.tab.c %.tab.h: %.y
+	@echo "   BISON $*.tab.c $*.tab.h"
 	@bison -vd parser.y
 
 parser.tab.o: parser.tab.c
