@@ -107,23 +107,15 @@ expression:
     T_INTEGER {
         struct get_value* g = xmalloc(sizeof(struct get_value));
         g->val = $1;
-        
-        struct statement_node* expr = statement_node_init();
-        expr->type = TYPE_GET_VALUE;
-        expr->data.get_value = g;
 
-        $$ = expr;
+        $$ = new_get_value(g);
     }
     |
     T_VARIABLE_IDENTIFIER {
         struct get_variable* g = xmalloc(sizeof(struct get_variable));
         g->identifier = $1;
 
-        struct statement_node* expr = statement_node_init();
-        expr->type = TYPE_GET_VARIABLE;
-        expr->data.get_variable = g;
-
-        $$ = expr;
+        $$ = new_get_variable(g);
     }
     |
     expression '+' expression {
@@ -131,11 +123,7 @@ expression:
         a->expr_left = $1;
         a->expr_right = $3;
 
-        struct statement_node* expr = statement_node_init();
-        expr->type = TYPE_ADD;
-        expr->data.add = a;
-
-        $$ = expr;
+        $$ = new_add(a);
     }
     |
     expression '-' expression {
@@ -143,11 +131,7 @@ expression:
         s->expr_left = $1;
         s->expr_right = $3;
 
-        struct statement_node* expr = statement_node_init();
-        expr->type = TYPE_SUBTRACT;
-        expr->data.subtract = s;
-
-        $$ = expr;
+        $$ = new_subtract(s);
     }
     |
     expression '*' expression {
@@ -155,11 +139,7 @@ expression:
         m->expr_left = $1;
         m->expr_right = $3;
 
-        struct statement_node* expr = statement_node_init();
-        expr->type = TYPE_MULTIPLY;
-        expr->data.multiply = m;
-
-        $$ = expr;
+        $$ = new_multiply(m);
     }
     |
     comparison
@@ -168,11 +148,7 @@ expression:
         struct parens* p = xmalloc(sizeof(struct parens));
         p->expr = $2;
 
-        struct statement_node* expr = statement_node_init();
-        expr->type = TYPE_PARENS;
-        expr->data.parens = p;
-
-        $$ = expr;
+        $$ = new_parens(p);
     }
     ;
 
