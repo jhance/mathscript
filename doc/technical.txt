@@ -1,0 +1,87 @@
+Expressions
+===========
+
+Expressions can be regarded in the form of a tree.
+
+     +
+    / \
+   *   6
+  / \
+ 5   2
+
+Which says to add the tree "6" and the tree:
+ 
+   *
+  / \
+ 5   2
+
+Where "6" is a tree of type TYPE_GET_VALUE (which is defined in a header file
+inside an enum). While technically its something like this
+
+   GET_VAL
+      |
+      6
+
+where 6 is an integer and GET_VAL is the tree itself that holds "6" as its
+data, its easier just to write the value "6".
+
+The tree structure can contain anything it wants - Usually its another
+expression, or something like an identifier.
+
+
+
+Statements
+==========
+
+We can extend the notion of an expression to include trees that, instead
+of pointing to other trees by using the data union, use the builtin
+"struct statement_node* next". It is important to note that expressions
+and statements _share the same data type_. We can use this to form the idea
+of a statement_list, which is the core of the execution process.
+
+Consider this statement list and its data trees:
+
+     Print ----> If
+       |        /  \
+       5       >    \
+              / \    \
+             4   3    \
+                    Print ----> = ----> Print
+                      |        / \        |
+                      4       a   7       +
+                                         / \
+                                        a   2
+
+First, the program will print 5. It then proceeds to the "next" statement, the
+If. The If evaluates its first data, the expression on the left, to find
+if it is True or False. In this case, 4 > 3, so it is True. Because it is
+True, the program executes the statement list that is held in the second part
+of the data struct.
+
+Notice how we can make a standalone program out of the second part of the If
+statement:
+
+
+  Print ----> = ----> Print
+    |        / \        |
+    4       a   7       +
+                       / \
+                      a   2
+
+Obviously this case works because it doesn't depend on anything that happened
+outside the If statement. However, its important to note that we can construct
+an entirely new program out of the If statement, and this is how the exec
+subsystem deals with the If statement. When executing, it does keep the
+symtable.
+
+
+Parsing
+=======
+
+When we parse, we are essentially constructing instances of 
+struct statement_node* and setting them as the value to be picked up by the
+statements rule and placed into the current statement_list.
+
+Why do we create this structure instead of simply executing the code as it is
+read? This will lead to a number of problems. Firstly, there is no good way
+to use control statements and loops!
