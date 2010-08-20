@@ -2,7 +2,8 @@
 #define MATHSCRIPT_H
 
 enum statement_type {
-    TYPE_ROOT,
+    TYPE_START,
+    TYPE_END,
     TYPE_CALL_FUNCTION,
     TYPE_SET_VARIABLE,
     TYPE_GET_VARIABLE,
@@ -144,5 +145,6 @@ struct statement_list {
 /* Called from parser to create new statement nodes in the list */
 struct statement_node* statement_node_init();
 struct statement_list* statement_list_init();
+void statement_list_end(struct statement_list* list);
 
 #endif

@@ -22,7 +22,8 @@ void exec_statements(struct statement_list* list) {
 
 int exec_statement(struct statement_node* s) {
     switch(s->type) {
-        case TYPE_ROOT:
+        case TYPE_START:
+        case TYPE_END:
             return 0;
         case TYPE_CALL_FUNCTION:
             return exec_call_function(s->data.call_function);

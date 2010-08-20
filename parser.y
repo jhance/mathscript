@@ -34,6 +34,7 @@ struct statement_list* statement_list;
 %type <statement_node_val> statement
 %type <statement_node_val> block
 %type <statement_list_val> statements
+%type <statement_list_val> incomplete_statements
 
 %%
 
@@ -42,16 +43,22 @@ main:
         statement_list = $1
     }
 
-statements: 
+statements:
+    incomplete_statements {
+        statement_list_end($1);
+        $$ = $1;
+    }
+
+incomplete_statements: 
     /* empty */ {
         $$ = statement_list_init();
     }
-    | statements statement ';' {
+    | incomplete_statements statement ';' {
         $1->end->next = $2;
         $1->end = $2;
         $$ = $1;
     }
-    | statements block {
+    | incomplete_statements block {
         $1->end->next = $2;
         $1->end = $2;
         $$ = $1;
