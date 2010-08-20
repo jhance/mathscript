@@ -13,7 +13,7 @@ OBJECTS += symtable.o
 
 mathscript: $(OBJECTS)
 	@echo "   CCLD  mathscript"
-	@$(CC) $(OBJECTS) -lfl -o mathscript
+	@$(CC) $^ -lfl -o mathscript
 
 statement.o: xmalloc.h
 new.o: statement.h xmalloc.h
