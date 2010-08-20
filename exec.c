@@ -1,4 +1,5 @@
-#include "mathscript.h"
+#include "exec.h"
+#include "statement.h"
 #include "symtable.h"
 #include "xmalloc.h"
 #include <stdio.h>

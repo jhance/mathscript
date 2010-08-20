@@ -3,6 +3,7 @@ CC=gcc -Wall -Werror -g
 OBJECTS =
 OBJECTS += lex.yy.o
 OBJECTS += parser.tab.o
+OBJECTS += statement.o
 OBJECTS += new.o
 OBJECTS += exec.o
 OBJECTS += xmalloc.o
@@ -12,15 +13,16 @@ mathscript: $(OBJECTS)
 	@echo "   CCLD  mathscript"
 	@$(CC) $(OBJECTS) -lfl -o mathscript
 
-new.o: mathscript.h xmalloc.h
-exec.o: mathscript.h xmalloc.h symtable.h
+statement.o: xmalloc.h
+new.o: statement.h xmalloc.h
+exec.o: statement.h xmalloc.h symtable.h
 symtable.o: xmalloc.h
 
-parser.tab.o: mathscript.h
+parser.tab.o: statement.h new.h exec.h
 
 
 #### RULES ####
-%.o : %.c
+%.o : %.c %.h
 	@echo "   CC    $@"
 	@$(CC) -c $< -o $@
 

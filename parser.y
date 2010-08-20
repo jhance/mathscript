@@ -1,7 +1,9 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-#include "mathscript.h"
+#include "statement.h"
+#include "new.h"
+#include "exec.h"
 #include "xmalloc.h"
 
 struct statement_list* statement_list;
