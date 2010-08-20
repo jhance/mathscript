@@ -6,8 +6,8 @@ OBJECTS += parser.tab.o
 OBJECTS += statement.o
 OBJECTS += new.o
 OBJECTS += exec.o
-OBJECTS += write.o
 OBJECTS += read.o
+OBJECTS += write.o
 OBJECTS += xmalloc.o
 OBJECTS += symtable.o
 
@@ -18,6 +18,8 @@ mathscript: $(OBJECTS)
 statement.o: xmalloc.h
 new.o: statement.h xmalloc.h
 exec.o: statement.h xmalloc.h symtable.h
+read.o: statement.h new.h xmalloc.h
+write.o: statement.h
 symtable.o: xmalloc.h
 
 parser.tab.o: statement.h new.h exec.h read.h write.h mode.h
