@@ -58,6 +58,9 @@ if it is True or False. In this case, 4 > 3, so it is True. Because it is
 True, the program executes the statement list that is held in the second part
 of the data struct.
 
+* Technically, a statement list always begins with a statement of type
+  TYPE_START and ends with one of TYPE_END.
+
 Notice how we can make a standalone program out of the second part of the If
 statement:
 
@@ -85,3 +88,18 @@ statements rule and placed into the current statement_list.
 Why do we create this structure instead of simply executing the code as it is
 read? This will lead to a number of problems. Firstly, there is no good way
 to use control statements and loops!
+
+
+Compilation
+==========
+
+Compilation is implemented through the "write" subsystem. Execution is
+implemented through the "read" subsystem.
+
+The basic idea is to loop through each statement, write its type, and then
+write the necessary data, generally using recursion. Statement lists
+MUST end with a statement of type TYPE_END so that the "read" subsystem
+knows when to stop reading an inner list and when to continue reading the
+outer one.
+
+See read.h, read.c, write.h, and write.c.
