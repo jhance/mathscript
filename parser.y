@@ -223,24 +223,39 @@ yyerror(const char* str) {
 
 int main(int argc, char** argv) {
     enum mode m = MODE_INTERPRET;
-    char* filename = NULL;
+    char* outfile = NULL;
+    char* infile = NULL;
     if(argc >= 2) {
         if(strcmp(argv[1], "-c") == 0) {
             m = MODE_COMPILE;
         } else if(strcmp(argv[1], "-e") == 0) {
             m = MODE_EXECUTE;
         }
+        else {
+            infile = argv[1];
+        }
     }
     if(argc >= 3) {
-        filename = argv[2];
+        infile = argv[2];
+    }
+    if(argc >= 4) {
+        outfile = argv[3];
     }
 
     /* read data from binary or text */
     if(m == MODE_INTERPRET || m == MODE_COMPILE) {
+        if(infile != NULL) {
+            FILE* fin = fopen(infile, "r");
+            if(fin == NULL) {
+                fprintf(stderr, "Error: Couldn't open file\n");
+                exit(1);
+            }
+            stdin = fin;
+        }
         yyparse();
     }
     else { /* MODE_EXECUTE */
-        read_prepare(filename);
+        read_prepare(infile);
         statement_list = read_statements();
     }
 
@@ -250,7 +265,7 @@ int main(int argc, char** argv) {
         exec_statements(statement_list);
     }
     else { /* MODE_COMPILE */
-        write_prepare(filename);
+        write_prepare(outfile);
         write_statements(statement_list);
     }
     return 0;
