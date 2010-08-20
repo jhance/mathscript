@@ -25,11 +25,12 @@
 <INITIAL>!=         return T_COMPARE_NE;
 <INITIAL>[a-z]      yylval.char_val = yytext[0]; return T_VARIABLE_IDENTIFIER;
 <INITIAL>[A-Z]      yylval.char_val = yytext[0]; return T_FUNCTION_IDENTIFIER;
+<INITIAL>\/\*       BEGIN M_COMMENT;
+<INITIAL>\/\/       BEGIN S_COMMENT;
+<INITIAL>^#        BEGIN S_COMMENT;
 <INITIAL>\n         /* do nothing */
 <INITIAL>[ \t]      /* do nothing */
 <INITIAL>.          return (int) yytext[0];
-<INITIAL>\/\*       BEGIN M_COMMENT;
-<INITIAL>\/\/       BEGIN S_COMMENT;
 
 <M_COMMENT>\*\/     BEGIN INITIAL;
 <M_COMMENT>.        /* do nothing */
