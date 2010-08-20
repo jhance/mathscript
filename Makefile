@@ -6,6 +6,8 @@ OBJECTS += parser.tab.o
 OBJECTS += statement.o
 OBJECTS += new.o
 OBJECTS += exec.o
+OBJECTS += write.o
+OBJECTS += read.o
 OBJECTS += xmalloc.o
 OBJECTS += symtable.o
 
@@ -18,7 +20,7 @@ new.o: statement.h xmalloc.h
 exec.o: statement.h xmalloc.h symtable.h
 symtable.o: xmalloc.h
 
-parser.tab.o: statement.h new.h exec.h
+parser.tab.o: statement.h new.h exec.h read.h write.h mode.h
 
 
 #### RULES ####

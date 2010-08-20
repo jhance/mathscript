@@ -4,7 +4,10 @@
 #include "statement.h"
 #include "new.h"
 #include "exec.h"
+#include "read.h"
+#include "write.h"
 #include "xmalloc.h"
+#include "mode.h"
 
 struct statement_list* statement_list;
 %}
@@ -218,9 +221,37 @@ yyerror(const char* str) {
     exit(1);
 }
 
-int main() {
-    yyparse();
-    exec_prepare();
-    exec_statements(statement_list);
+int main(int argc, char** argv) {
+    enum mode m = MODE_INTERPRET;
+    char* filename = NULL;
+    if(argc >= 2) {
+        if(strcmp(argv[1], "-c") == 0) {
+            m = MODE_COMPILE;
+        } else if(strcmp(argv[1], "-e") == 0) {
+            m = MODE_EXECUTE;
+        }
+    }
+    if(argc >= 3) {
+        filename = argv[2];
+    }
+
+    /* read data from binary or text */
+    if(m == MODE_INTERPRET || m == MODE_COMPILE) {
+        yyparse();
+    }
+    else { /* MODE_EXECUTE */
+        read_prepare(filename);
+        statement_list = read_statements();
+    }
+
+    /* execute or write data */
+    if(m == MODE_INTERPRET || m == MODE_EXECUTE) {
+        exec_prepare();
+        exec_statements(statement_list);
+    }
+    else { /* MODE_COMPILE */
+        write_prepare(filename);
+        write_statements(statement_list);
+    }
     return 0;
 }
