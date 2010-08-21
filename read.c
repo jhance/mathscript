@@ -117,18 +117,31 @@ struct call_function* read_call_function() {
 }
 
 struct set_variable* read_set_variable() {
+    size_t size;
+    fread(&size, sizeof(size_t), 1, fin);
+
     struct set_variable* set_variable = xmalloc(sizeof(struct set_variable));
 
-    fread(&(set_variable->identifier), sizeof(char), 1, fin);
+    /* make sure to include room for the \0 at end of string */
+    set_variable->identifier = xmalloc(sizeof(char) * (size + 1));
+    fread(set_variable->identifier, sizeof(char), size, fin);
+    set_variable->identifier[size] = '\0';
+
     set_variable->expr = read_statement();
 
     return set_variable;
 }
 
 struct get_variable* read_get_variable() {
+    size_t size;
+    fread(&size, sizeof(size_t), 1, fin);
+
     struct get_variable* get_variable = xmalloc(sizeof(struct get_variable));
 
-    fread(&(get_variable->identifier), sizeof(char), 1, fin);
+    /* make sure to include room for the \0 at end of string */
+    get_variable->identifier = xmalloc(sizeof(char) * (size + 1));
+    fread(get_variable->identifier, sizeof(char), size, fin);
+    get_variable->identifier[size] = '\0';
 
     return get_variable;
 }
