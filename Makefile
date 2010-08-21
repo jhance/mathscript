@@ -32,7 +32,7 @@ parser.tab.o: statement.h new.h exec.h read.h write.h mode.h
 
 %.tab.c %.tab.h: %.y
 	@echo "   BISON $*.tab.c $*.tab.h"
-	@bison -vd parser.y
+	@bison -vtd parser.y
 
 parser.tab.o: parser.tab.c
 	@echo "   CC    parser.tab.o"
