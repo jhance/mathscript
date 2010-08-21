@@ -1,2 +1,26 @@
 This is essentially just a toy programming language. Built for educational
 purposes only.
+
+
+Example Program:
+
+
+
+/* This is a comment */
+// This is a comment
+#  This is a comment
+
+a = 0;
+b = 1;
+print(a);
+print(b);
+while(a + b < 100) {
+   cur = a + b;
+   a = b;
+   b = cur;
+   print(cur);
+}
+
+if(1 < 2) {
+    print(1);
+}
