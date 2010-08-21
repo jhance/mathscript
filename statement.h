@@ -29,12 +29,12 @@ struct call_function {
 };
 
 struct set_variable {
-    char identifier;
+    char* identifier;
     struct statement_node* expr;
 };
 
 struct get_variable {
-    char identifier;
+    char* identifier;
 };
 
 struct get_value {

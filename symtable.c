@@ -4,36 +4,54 @@
 #include <string.h>
 #include <stdio.h>
 
-symtable symtable_init() {
-    /* There are 52 available slots */
-    symtable table = xmalloc(sizeof(symtable_val) * 52);
+struct symtable* symtable_init() {
+    struct symtable* table = xmalloc(sizeof(struct symtable));
+    table->chains = xmalloc(sizeof(struct symtable_chain) * SYMTABLE_SIZE);
     return table;
 }
 
-int symtable_calc_index(char identifier) {
-    if(identifier >= 'A' && identifier <= 'Z') {
-        return identifier - 'A';
+int symtable_hash(char* identifier) {
+    int h = 0;
+    char* p;
+
+    for(p = identifier; *p != '\0'; p++) {
+        h = SYMTABLE_HASH_MULTIPLIER * h + *p;
     }
-    else if(identifier >= 'a' && identifier <= 'z') { 
-        return identifier - 'a' + 26;
-    }
-    else {
-        fprintf(stderr, "Error: Invalid identifier");
-        exit(1);
-    }
+    return h % SYMTABLE_SIZE;
 }
 
-symtable_val symtable_get(symtable table, char identifier) {
-    symtable_val val = table[symtable_calc_index(identifier)];
-    if(val != NULL) {
-        return val;
+void* symtable_get(struct symtable* table, char* identifier) {
+    int index = symtable_hash(identifier);
+    struct symtable_chain* chain = table->chains + index;
+
+    struct symtable_chain* cur = chain;
+    while(cur->next != NULL) {
+        cur = cur->next;
+        if(strcmp(cur->identifier, identifier) == 0) {
+            return cur->val;
+        }
     }
-    else {
-        fprintf(stderr, "Error: Undefined identifier");
-        exit(1);
-    }
+
+    fprintf(stderr, "Error: No such identifier in symtable: %s\n", identifier);
+    exit(1);
 }
 
-void symtable_set(symtable table, char identifier, symtable_val val) {
-    table[symtable_calc_index(identifier)] = val;
+void symtable_set(struct symtable* table, char* identifier, void* val) {
+    int index = symtable_hash(identifier);
+    struct symtable_chain* chain = table->chains + index;
+    
+    struct symtable_chain* cur = chain;
+    while(cur->next != NULL) {
+        cur = cur->next;
+
+        if(strcmp(cur->identifier, identifier) == 0) {
+            cur->val = val;
+            return;
+        }
+    }
+
+    struct symtable_chain* new = xmalloc(sizeof(struct symtable_chain));
+    new->identifier = identifier;
+    new->val = val;
+    cur->next = new;
 }

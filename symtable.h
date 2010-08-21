@@ -1,12 +1,22 @@
 #ifndef SYMTABLE_H
 #define SYMTABLE_H
 
-typedef void** symtable;
-typedef void* symtable_val;
+#define SYMTABLE_SIZE 50
+#define SYMTABLE_HASH_MULTIPLIER 31
 
-symtable symtable_init();
-int symtable_calc_index(char identifier);
-symtable_val symtable_get(symtable table, char identifier);
-void symtable_set(symtable table, char identifier, void* val);
+struct symtable_chain {
+    struct symtable_chain* next;
+    char* identifier;
+    void* val;
+};
+
+struct symtable {
+    struct symtable_chain* chains;
+};
+
+struct symtable* symtable_init();
+int symtable_hash(char* identifier);
+void* symtable_get(struct symtable* table, char* identifier);
+void symtable_set(struct symtable* table, char* identifier, void* val);
 
 #endif
