@@ -69,7 +69,7 @@ incomplete_statements:
     ;
 
 statement:
-    T_PRINT '[' expression ']' {
+    T_PRINT '(' expression ')' {
         struct call_function* call = xmalloc(sizeof(struct call_function));
         call->identifier = "print";
         call->args = xmalloc(sizeof(struct statement_node));
@@ -88,7 +88,7 @@ statement:
     ;
 
 block:
-    T_IF '[' expression ']' '{' statements '}' {
+    T_IF '(' expression ')' '{' statements '}' {
         struct if_statement* i = xmalloc(sizeof(struct if_statement));
         i->expr = $3;
         i->statements = $6;
@@ -96,7 +96,7 @@ block:
         $$ = new_if_statement(i);
     }
     |
-    T_WHILE '[' expression ']' '{' statements '}' {
+    T_WHILE '(' expression ')' '{' statements '}' {
         struct while_loop* w = xmalloc(sizeof(struct while_loop));
         w->expr = $3;
         w->statements = $6;
@@ -104,7 +104,7 @@ block:
         $$ = new_while_loop(w);
     }
     |
-    T_FOR '[' statement ';' expression ';' statement ']' '{' statements '}' {
+    T_FOR '(' statement ';' expression ';' statement ')' '{' statements '}' {
         struct for_loop* f = xmalloc(sizeof(struct for_loop));
         f->initial_statement = $3;
         f->expr = $5;
