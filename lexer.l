@@ -23,7 +23,10 @@
 <INITIAL><=         return T_COMPARE_LE;
 <INITIAL>==         return T_COMPARE_E;
 <INITIAL>!=         return T_COMPARE_NE;
-<INITIAL>[a-zA-Z_]+ yylval.string_val = strdup(yytext); return T_IDENTIFIER;
+<INITIAL>[a-zA-Z][a-zA-Z1-9_]* {
+    yylval.string_val = strdup(yytext);
+    return T_IDENTIFIER;
+}
 <INITIAL>\/\*       BEGIN M_COMMENT;
 <INITIAL>\/\/       BEGIN S_COMMENT;
 <INITIAL>^#         BEGIN S_COMMENT;
