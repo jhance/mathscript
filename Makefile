@@ -1,6 +1,5 @@
 CC=gcc -Wall -Werror -g
 
-OBJECTS =
 OBJECTS += lex.yy.o
 OBJECTS += parser.tab.o
 OBJECTS += statement.o
