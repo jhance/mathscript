@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-static symtable table;
+static struct symtable* table;
 
 void exec_prepare() {
     table = symtable_init();

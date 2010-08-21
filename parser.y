@@ -15,12 +15,12 @@ struct statement_list* statement_list;
 %union {
     int int_val;
     char char_val;
+    char* string_val;
     struct statement_node* statement_node_val;
     struct statement_list* statement_list_val;
 }
 
-%token <char_val> T_VARIABLE_IDENTIFIER
-%token <char_val> T_FUNCTION_IDENTIFIER
+%token <string_val> T_IDENTIFIER
 %token <int_val> T_INTEGER
 %token T_PRINT
 %token T_IF
@@ -78,7 +78,7 @@ statement:
         $$ = new_call_function(call);
     }
     |
-    T_VARIABLE_IDENTIFIER '=' expression {
+    T_IDENTIFIER '=' expression {
         struct set_variable* s = xmalloc(sizeof(struct set_variable));
         s->identifier = $1;
         s->expr = $3;
@@ -123,7 +123,7 @@ expression:
         $$ = new_get_value(g);
     }
     |
-    T_VARIABLE_IDENTIFIER {
+    T_IDENTIFIER {
         struct get_variable* g = xmalloc(sizeof(struct get_variable));
         g->identifier = $1;
 

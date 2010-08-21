@@ -96,7 +96,7 @@ void write_statement(struct statement_node* s) {
 }
 
 void write_call_function(struct call_function* call_function) {
-    size_t size = strlen(call_function->identifier) + 1; /* include \0 */
+    size_t size = strlen(call_function->identifier); /* exclude \0 */
     fwrite(&size, sizeof(size_t), 1, fout);
     fwrite(call_function->identifier, sizeof(char), size, fout);
 
@@ -105,12 +105,17 @@ void write_call_function(struct call_function* call_function) {
 }
 
 void write_set_variable(struct set_variable* set_variable) {
-    fwrite(&(set_variable->identifier), sizeof(char), 1, fout);
+    size_t size = strlen(set_variable->identifier); /* exclude \0 */
+    fwrite(&size, sizeof(size_t), 1, fout);
+    fwrite(set_variable->identifier, sizeof(char), size, fout);
+
     write_statement(set_variable->expr);
 }
 
 void write_get_variable(struct get_variable* get_variable) {
-    fwrite(&(get_variable->identifier), sizeof(char), 1, fout);
+    size_t size = strlen(get_variable->identifier);
+    fwrite(&size, sizeof(size_t), 1, fout);
+    fwrite(get_variable->identifier, sizeof(char), size, fout);
 }
 
 void write_get_value(struct get_value* get_value) {
