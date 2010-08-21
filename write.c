@@ -46,55 +46,55 @@ void write_statement(struct statement_node* s) {
         case TYPE_END:
             return;
         case TYPE_CALL_FUNCTION:
-            write_call_function(s->data.call_function);
+            write_call_function(s->data->call_function);
             return;
         case TYPE_SET_VARIABLE:
-            write_set_variable(s->data.set_variable);
+            write_set_variable(s->data->set_variable);
             return;
         case TYPE_GET_VARIABLE:
-            write_get_variable(s->data.get_variable);
+            write_get_variable(s->data->get_variable);
             return;
         case TYPE_GET_VALUE:
-            write_get_value(s->data.get_value);
+            write_get_value(s->data->get_value);
             return;
         case TYPE_ADD:
-            write_add(s->data.add);
+            write_add(s->data->add);
             return;
         case TYPE_SUBTRACT:
-            write_subtract(s->data.subtract);
+            write_subtract(s->data->subtract);
             return;
         case TYPE_MULTIPLY:
-            write_multiply(s->data.multiply);
+            write_multiply(s->data->multiply);
             return;
         case TYPE_PARENS:
-            write_parens(s->data.parens);
+            write_parens(s->data->parens);
             return;
         case TYPE_COMPARE_G:
-            write_compare_g(s->data.compare_g);
+            write_compare_g(s->data->compare_g);
             return;
         case TYPE_COMPARE_GE:
-            write_compare_ge(s->data.compare_ge);
+            write_compare_ge(s->data->compare_ge);
             return;
         case TYPE_COMPARE_L:
-            write_compare_l(s->data.compare_l);
+            write_compare_l(s->data->compare_l);
             return;
         case TYPE_COMPARE_LE:
-            write_compare_le(s->data.compare_le);
+            write_compare_le(s->data->compare_le);
             return;
         case TYPE_COMPARE_E:
-            write_compare_e(s->data.compare_e);
+            write_compare_e(s->data->compare_e);
             return;
         case TYPE_COMPARE_NE:
-            write_compare_ne(s->data.compare_ne);
+            write_compare_ne(s->data->compare_ne);
             return;
         case TYPE_IF_STATEMENT:
-            write_if_statement(s->data.if_statement);
+            write_if_statement(s->data->if_statement);
             return;
         case TYPE_WHILE_LOOP:
-            write_while_loop(s->data.while_loop);
+            write_while_loop(s->data->while_loop);
             return;
         case TYPE_FOR_LOOP:
-            write_for_loop(s->data.for_loop);
+            write_for_loop(s->data->for_loop);
             return;
     }
 

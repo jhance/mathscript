@@ -5,10 +5,11 @@
 
 /* s = function type, t = enum type */
 #define DEFINE_NEW_FUNC(s,t)                                    \
-    struct statement_node* new_##s(struct s* s) {             \
+    struct statement_node* new_##s(struct s* s) {               \
         struct statement_node* new = statement_node_init();     \
         new->type = t;                                          \
-        new->data.s = s;                                        \
+        new->data = xmalloc(sizeof(union statement_info));      \
+        new->data->s = s;                                       \
                                                                 \
         return new;                                             \
     }

@@ -132,7 +132,7 @@ struct statement_node {
     
     enum statement_type type;
 
-    union statement_info data;
+    union statement_info* data;
 };
 
 struct statement_list {

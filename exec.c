@@ -26,39 +26,39 @@ int exec_statement(struct statement_node* s) {
         case TYPE_END:
             return 0;
         case TYPE_CALL_FUNCTION:
-            return exec_call_function(s->data.call_function);
+            return exec_call_function(s->data->call_function);
         case TYPE_SET_VARIABLE:
-            return exec_set_variable(s->data.set_variable);
+            return exec_set_variable(s->data->set_variable);
         case TYPE_GET_VARIABLE:
-            return exec_get_variable(s->data.get_variable);
+            return exec_get_variable(s->data->get_variable);
         case TYPE_GET_VALUE:
-            return exec_get_value(s->data.get_value);
+            return exec_get_value(s->data->get_value);
         case TYPE_ADD:
-            return exec_add(s->data.add);
+            return exec_add(s->data->add);
         case TYPE_SUBTRACT:
-            return exec_subtract(s->data.subtract);
+            return exec_subtract(s->data->subtract);
         case TYPE_MULTIPLY:
-            return exec_multiply(s->data.multiply);
+            return exec_multiply(s->data->multiply);
         case TYPE_PARENS:
-            return exec_parens(s->data.parens);
+            return exec_parens(s->data->parens);
         case TYPE_COMPARE_G:
-            return exec_compare_g(s->data.compare_g);
+            return exec_compare_g(s->data->compare_g);
         case TYPE_COMPARE_GE:
-            return exec_compare_ge(s->data.compare_ge);
+            return exec_compare_ge(s->data->compare_ge);
         case TYPE_COMPARE_L:
-            return exec_compare_l(s->data.compare_l);
+            return exec_compare_l(s->data->compare_l);
         case TYPE_COMPARE_LE:
-            return exec_compare_le(s->data.compare_le);
+            return exec_compare_le(s->data->compare_le);
         case TYPE_COMPARE_E:
-            return exec_compare_e(s->data.compare_e);
+            return exec_compare_e(s->data->compare_e);
         case TYPE_COMPARE_NE:
-            return exec_compare_ne(s->data.compare_ne);
+            return exec_compare_ne(s->data->compare_ne);
         case TYPE_IF_STATEMENT:
-            return exec_if_statement(s->data.if_statement);
+            return exec_if_statement(s->data->if_statement);
         case TYPE_WHILE_LOOP:
-            return exec_while_loop(s->data.while_loop);
+            return exec_while_loop(s->data->while_loop);
         case TYPE_FOR_LOOP:
-            return exec_for_loop(s->data.for_loop);
+            return exec_for_loop(s->data->for_loop);
     }
 
     fprintf(stderr, "Error: Invalid statement\n");
