@@ -27,7 +27,7 @@
 <INITIAL>[A-Z]      yylval.char_val = yytext[0]; return T_FUNCTION_IDENTIFIER;
 <INITIAL>\/\*       BEGIN M_COMMENT;
 <INITIAL>\/\/       BEGIN S_COMMENT;
-<INITIAL>^#        BEGIN S_COMMENT;
+<INITIAL>^#         BEGIN S_COMMENT;
 <INITIAL>\n         /* do nothing */
 <INITIAL>[ \t]      /* do nothing */
 <INITIAL>.          return (int) yytext[0];
