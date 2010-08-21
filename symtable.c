@@ -7,6 +7,12 @@
 struct symtable* symtable_init() {
     struct symtable* table = xmalloc(sizeof(struct symtable));
     table->chains = xmalloc(sizeof(struct symtable_chain) * SYMTABLE_SIZE);
+    
+    int i;
+    for(i = 0; i < SYMTABLE_SIZE; i++) {
+        (table->chains + i)->next = NULL;
+    }
+
     return table;
 }
 
