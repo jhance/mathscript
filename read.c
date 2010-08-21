@@ -22,6 +22,12 @@ void read_prepare(char* filename) {
     }
 }
 
+void read_end() {
+    if(fin != stdin) {
+        fclose(fin);
+    }
+}
+
 struct statement_list* read_statements() {
     struct statement_list* list = xmalloc(sizeof(struct statement_list));
     struct statement_node* node;

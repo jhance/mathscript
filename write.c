@@ -19,6 +19,12 @@ void write_prepare(char* filename) {
     }
 }
 
+void write_end() {
+    if(fout != stdout) {
+        fclose(fout);
+    }
+}
+
 void write_statements(struct statement_list* list) {
     struct statement_node* cur = list->start;
     while(cur != NULL) {

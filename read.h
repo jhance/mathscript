@@ -5,9 +5,9 @@
 #include <stdio.h>
 
 void read_prepare(char* filename);
+void read_end();
 struct statement_list* read_statements();
 struct statement_node* read_statement();
-void read_end();
 
 #define DECLARE_READ_FUNC(s) struct s* read_##s();
 

@@ -253,10 +253,14 @@ int main(int argc, char** argv) {
             stdin = fin;
         }
         yyparse();
+        if(infile != NULL) {
+            fclose(stdin);
+        }
     }
     else { /* MODE_EXECUTE */
         read_prepare(infile);
         statement_list = read_statements();
+        read_end();
     }
 
     /* execute or write data */
@@ -267,6 +271,7 @@ int main(int argc, char** argv) {
     else { /* MODE_COMPILE */
         write_prepare(outfile);
         write_statements(statement_list);
+        write_end();
     }
     return 0;
 }
