@@ -96,7 +96,7 @@ void write_statement(struct statement_node* s) {
 }
 
 void write_call_function(struct call_function* call_function) {
-    size_t size = strlen(call_function->identifier) + 1; /* include \0 */
+    size_t size = strlen(call_function->identifier); /* exclude \0 */
     fwrite(&size, sizeof(size_t), 1, fout);
     fwrite(call_function->identifier, sizeof(char), size, fout);
 

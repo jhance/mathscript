@@ -106,8 +106,10 @@ struct call_function* read_call_function() {
     struct call_function* call_function = 
         xmalloc(sizeof(struct call_function));
     
-    call_function->identifier = xmalloc(sizeof(char) * size);
+    /* make sure to include room for the \0 at end of string */
+    call_function->identifier = xmalloc(sizeof(char) * (size + 1));
     fread(call_function->identifier, sizeof(char), size, fin);
+    call_function->identifier[size] = '\0';
 
     call_function->args = read_statement();
 
