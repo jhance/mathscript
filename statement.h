@@ -2,6 +2,7 @@
 #define MATHSCRIPT_H
 
 enum statement_type {
+    TYPE_INVALID,
     TYPE_START,
     TYPE_END,
     TYPE_CALL_FUNCTION,
