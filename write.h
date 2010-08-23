@@ -5,6 +5,7 @@
 #include <stdio.h>
 
 void write_prepare(char* filename);
+void write_end(void);
 void write_statements(struct statement_list* list);
 void write_statement(struct statement_node* node);
 

@@ -1,11 +1,11 @@
 #include "statement.h"
 #include "xmalloc.h"
 
-struct statement_node* statement_node_init() {
+struct statement_node* statement_node_init(void) {
     return xmalloc(sizeof(struct statement_node));
 }
 
-struct statement_list* statement_list_init() {
+struct statement_list* statement_list_init(void) {
     struct statement_list* l = xmalloc(sizeof(struct statement_list));
     struct statement_node* s = xmalloc(sizeof(struct statement_node));
     s->type = TYPE_START;

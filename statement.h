@@ -143,8 +143,8 @@ struct statement_list {
 
 
 /* Called from parser to create new statement nodes in the list */
-struct statement_node* statement_node_init();
-struct statement_list* statement_list_init();
+struct statement_node* statement_node_init(void);
+struct statement_list* statement_list_init(void);
 void statement_list_end(struct statement_list* list);
 
 #endif

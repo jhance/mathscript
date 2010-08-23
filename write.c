@@ -19,7 +19,7 @@ void write_prepare(char* filename) {
     }
 }
 
-void write_end() {
+void write_end(void) {
     if(fout != stdout) {
         fclose(fout);
     }

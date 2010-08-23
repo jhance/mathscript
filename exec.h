@@ -3,7 +3,7 @@
 
 #include "statement.h"
 
-void exec_prepare();
+void exec_prepare(void);
 int exec_statement(struct statement_node* s);
 void exec_statements(struct statement_list* list);
 

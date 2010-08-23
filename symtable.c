@@ -4,7 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 
-struct symtable* symtable_init() {
+struct symtable* symtable_init(void) {
     struct symtable* table = xmalloc(sizeof(struct symtable));
     table->chains = xmalloc(sizeof(struct symtable_chain) * SYMTABLE_SIZE);
     

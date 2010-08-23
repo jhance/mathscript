@@ -5,7 +5,7 @@
 #include <stdio.h>
 
 void read_prepare(char* filename);
-void read_end();
+void read_end(void);
 struct statement_list* read_statements();
 struct statement_node* read_statement();
 

@@ -14,7 +14,7 @@ struct symtable {
     struct symtable_chain* chains;
 };
 
-struct symtable* symtable_init();
+struct symtable* symtable_init(void);
 int symtable_hash(char* identifier);
 void* symtable_get(struct symtable* table, char* identifier);
 void symtable_set(struct symtable* table, char* identifier, void* val);

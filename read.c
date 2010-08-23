@@ -22,7 +22,7 @@ void read_prepare(char* filename) {
     }
 }
 
-void read_end() {
+void read_end(void) {
     if(fin != stdin) {
         fclose(fin);
     }
