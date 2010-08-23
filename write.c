@@ -42,6 +42,9 @@ void write_statements(struct statement_list* list) {
 void write_statement(struct statement_node* s) {
     fwrite(&(s->type), sizeof(int), 1, fout);
     switch(s->type) {
+        case TYPE_INVALID:
+            fprintf(stderr, "Error: Invalid statement\n");
+            exit(1);
         case TYPE_START:
         case TYPE_END:
             return;

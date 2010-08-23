@@ -22,6 +22,9 @@ void exec_statements(struct statement_list* list) {
 
 int exec_statement(struct statement_node* s) {
     switch(s->type) {
+        case TYPE_INVALID:
+            fprintf(stderr, "Error: Invalid statement\n");
+            exit(1);
         case TYPE_START:
         case TYPE_END:
             return 0;
