@@ -1,4 +1,5 @@
-CC=gcc -Wall -Werror -g
+CFLAGS=-g
+CC=gcc -Wall -Werror $(CFLAGS)
 
 OBJECTS += lex.yy.o
 OBJECTS += parser.tab.o
@@ -9,6 +10,8 @@ OBJECTS += read.o
 OBJECTS += write.o
 OBJECTS += xmalloc.o
 OBJECTS += symtable.o
+
+PREFIX=/usr/local
 
 mathscript: $(OBJECTS)
 	@echo "   CCLD  mathscript"
@@ -35,7 +38,7 @@ parser.tab.o: statement.h new.h exec.h read.h write.h mode.h
 
 parser.tab.o: parser.tab.c
 	@echo "   CC    parser.tab.o"
-	@gcc -g -c parser.tab.c -o parser.tab.o
+	@gcc $(CFLAGS) -c parser.tab.c -o parser.tab.o
 
 lex.yy.c: lexer.l
 	@echo "   FLEX  lex.yy.c"
@@ -43,7 +46,7 @@ lex.yy.c: lexer.l
 
 lex.yy.o: lex.yy.c parser.tab.h
 	@echo "   CC    lex.yy.o"
-	@gcc -g -c lex.yy.c -o lex.yy.o
+	@gcc $(CFLAGS) -c lex.yy.c -o lex.yy.o
 
 
 # Fake rules
@@ -54,3 +57,6 @@ clean:
 	@rm -f *.o
 	@rm -f mathscript
 	@rm -f parser.output
+
+install:
+	@cp mathscript $(PREFIX)/bin
