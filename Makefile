@@ -1,3 +1,14 @@
+-include make.conf
+
+CORE=.MAKEFILE-VERSION
+
+# Don't optimize if we are debugging.
+ifdef DEBUG
+CFLAGS=-g
+else
+CFLAGS=-O2
+endif
+
 CFLAGS=-g
 CC=gcc -Wall -Werror $(CFLAGS)
 
@@ -25,38 +36,41 @@ DISTFILES += README
 
 PREFIX=/usr/local
 
-mathscript: $(OBJECTS)
+DEPS=$(OBJECTS:%.o=.d/%.d)
+
+mathscript: $(OBJECTS) $(CORE)
 	@echo "   CCLD  mathscript"
-	@$(CC) $^ -lfl -o mathscript
+	@$(CC) $(subst $(CORE),,$^) -lfl -o mathscript
 
-statement.o: xmalloc.h
-new.o: statement.h xmalloc.h
-exec.o: statement.h xmalloc.h symtable.h
-read.o: statement.h new.h xmalloc.h
-write.o: statement.h
-symtable.o: xmalloc.h
+# everything depends on CORE. If it changed, rebuild!
+.MAKEFILE-VERSION: Makefile make.conf
+	@echo "Makefile update."
+	@touch .MAKEFILE-VERSION
 
-parser.tab.o: statement.h new.h exec.h read.h write.h mode.h
-
+-include $(DEPS)
 
 #### RULES ####
-%.o : %.c %.h
+.d/%.d: %.c $(CORE)
+	@ESCAPED_NAME=`echo "$@" | sed "s/\//\\\//g"`
+	@$(CC) -M $< | sed "s/$*.o/$(ESCAPED_NAME)/g" > $@
+
+%.o : %.c $(CORE)
 	@echo "   CC    $@"
 	@$(CC) -c $< -o $@
 
-%.tab.c %.tab.h: %.y
+%.tab.c %.tab.h: %.y $(CORE)
 	@echo "   BISON $*.tab.c $*.tab.h"
 	@bison -vtd parser.y
 
-parser.tab.o: parser.tab.c
+parser.tab.o: parser.tab.c $(CORE)
 	@echo "   CC    parser.tab.o"
 	@gcc $(CFLAGS) -c parser.tab.c -o parser.tab.o
 
-lex.yy.c: lexer.l
+lex.yy.c: lexer.l $(CORE)
 	@echo "   FLEX  lex.yy.c"
 	@flex lexer.l
 
-lex.yy.o: lex.yy.c parser.tab.h
+lex.yy.o: lex.yy.c parser.tab.h $(CORE)
 	@echo "   CC    lex.yy.o"
 	@gcc $(CFLAGS) -c lex.yy.c -o lex.yy.o
 
@@ -70,6 +84,7 @@ clean:
 	@rm -f *.o
 	@rm -f mathscript
 	@rm -f parser.output
+	@rm -f .d/*.d
 
 .PHONY: install
 install:

@@ -3,4 +3,6 @@
 /*.tab.*
 /*.o
 /parser.output
-
+/make.conf
+/.MAKEFILE-VERSION
+*.d
