@@ -4,12 +4,12 @@
 #include "statement.h"
 #include <stdio.h>
 
-void read_prepare(char* filename);
+void read_prepare(char *filename);
 void read_end(void);
-struct statement_list* read_statements();
-struct statement_node* read_statement();
+struct statement_list *read_statements();
+struct statement_node *read_statement();
 
-#define DECLARE_READ_FUNC(s) struct s* read_##s();
+#define DECLARE_READ_FUNC(s) struct s *read_##s();
 
 /* please use semicolons after the macros */
 DECLARE_READ_FUNC(call_function);

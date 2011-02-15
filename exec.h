@@ -4,15 +4,15 @@
 #include "statement.h"
 
 void exec_prepare(void);
-int exec_statement(struct statement_node* s);
-void exec_statements(struct statement_list* list);
+int exec_statement(struct statement_node *s);
+void exec_statements(struct statement_list *list);
 
 /* Called from the executer to actually execute a statement node
  *
  * Example:
- * int exec_get_value(struct get_value* get_value);
+ * int exec_get_value(struct get_value *get_value);
  */
-#define DECLARE_EXEC_FUNC(s) int exec_##s(struct s* s);
+#define DECLARE_EXEC_FUNC(s) int exec_##s(struct s *s);
 
 /* please use semicolons after the macros */
 DECLARE_EXEC_FUNC(call_function);

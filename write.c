@@ -5,9 +5,9 @@
 #include <sys/types.h>
 #include <string.h>
 
-static FILE* fout;
+static FILE *fout;
 
-void write_prepare(char* filename) {
+void write_prepare(char *filename) {
     if(filename == NULL) {
         fout = stdout;
         return;
@@ -25,8 +25,8 @@ void write_end(void) {
     }
 }
 
-void write_statements(struct statement_list* list) {
-    struct statement_node* cur = list->start;
+void write_statements(struct statement_list *list) {
+    struct statement_node *cur = list->start;
     while(cur != NULL) {
         write_statement(cur);
 
@@ -39,7 +39,7 @@ void write_statements(struct statement_list* list) {
     }
 }
 
-void write_statement(struct statement_node* s) {
+void write_statement(struct statement_node *s) {
     fwrite(&(s->type), sizeof(int), 1, fout);
     switch(s->type) {
         case TYPE_INVALID:
@@ -104,7 +104,7 @@ void write_statement(struct statement_node* s) {
     fprintf(stderr, "Error: Invalid statement\n");
 }
 
-void write_call_function(struct call_function* call_function) {
+void write_call_function(struct call_function *call_function) {
     size_t size = strlen(call_function->identifier); /* exclude \0 */
     fwrite(&size, sizeof(size_t), 1, fout);
     fwrite(call_function->identifier, sizeof(char), size, fout);
@@ -113,7 +113,7 @@ void write_call_function(struct call_function* call_function) {
     write_statement(call_function->args);
 }
 
-void write_set_variable(struct set_variable* set_variable) {
+void write_set_variable(struct set_variable *set_variable) {
     size_t size = strlen(set_variable->identifier); /* exclude \0 */
     fwrite(&size, sizeof(size_t), 1, fout);
     fwrite(set_variable->identifier, sizeof(char), size, fout);
@@ -121,76 +121,76 @@ void write_set_variable(struct set_variable* set_variable) {
     write_statement(set_variable->expr);
 }
 
-void write_get_variable(struct get_variable* get_variable) {
+void write_get_variable(struct get_variable *get_variable) {
     size_t size = strlen(get_variable->identifier);
     fwrite(&size, sizeof(size_t), 1, fout);
     fwrite(get_variable->identifier, sizeof(char), size, fout);
 }
 
-void write_get_value(struct get_value* get_value) {
+void write_get_value(struct get_value *get_value) {
     fwrite(&(get_value->val), sizeof(int), 1, fout);
 }
 
-void write_add(struct add* add) {
+void write_add(struct add *add) {
     write_statement(add->expr_left);
     write_statement(add->expr_right);
 }
 
-void write_subtract(struct subtract* subtract) {
+void write_subtract(struct subtract *subtract) {
     write_statement(subtract->expr_left);
     write_statement(subtract->expr_right);
 }
 
-void write_multiply(struct multiply* multiply) {
+void write_multiply(struct multiply *multiply) {
     write_statement(multiply->expr_left);
     write_statement(multiply->expr_right);
 }
 
-void write_parens(struct parens* parens) {
+void write_parens(struct parens *parens) {
     write_statement(parens->expr);
 }
 
-void write_compare_g(struct compare_g* compare_g) {
+void write_compare_g(struct compare_g *compare_g) {
     write_statement(compare_g->expr_left);
     write_statement(compare_g->expr_right);
 }
 
-void write_compare_ge(struct compare_ge* compare_ge) {
+void write_compare_ge(struct compare_ge *compare_ge) {
     write_statement(compare_ge->expr_left);
     write_statement(compare_ge->expr_right);
 }
 
-void write_compare_l(struct compare_l* compare_l) {
+void write_compare_l(struct compare_l *compare_l) {
     write_statement(compare_l->expr_left);
     write_statement(compare_l->expr_right);
 }
 
-void write_compare_le(struct compare_le* compare_le) {
+void write_compare_le(struct compare_le *compare_le) {
     write_statement(compare_le->expr_left);
     write_statement(compare_le->expr_right);
 }
 
-void write_compare_e(struct compare_e* compare_e) {
+void write_compare_e(struct compare_e *compare_e) {
     write_statement(compare_e->expr_left);
     write_statement(compare_e->expr_right);
 }
 
-void write_compare_ne(struct compare_ne* compare_ne) {
+void write_compare_ne(struct compare_ne *compare_ne) {
     write_statement(compare_ne->expr_left);
     write_statement(compare_ne->expr_right);
 }
 
-void write_if_statement(struct if_statement* if_statement) {
+void write_if_statement(struct if_statement *if_statement) {
     write_statement(if_statement->expr);
     write_statements(if_statement->statements);
 }
 
-void write_while_loop(struct while_loop* while_loop) {
+void write_while_loop(struct while_loop *while_loop) {
     write_statement(while_loop->expr);
     write_statements(while_loop->statements);
 }
 
-void write_for_loop(struct for_loop* for_loop) {
+void write_for_loop(struct for_loop *for_loop) {
     write_statement(for_loop->initial_statement);
     write_statement(for_loop->expr);
     write_statement(for_loop->iterator_statement);

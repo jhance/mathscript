@@ -4,12 +4,12 @@
 #include "statement.h"
 #include <stdio.h>
 
-void write_prepare(char* filename);
+void write_prepare(char *filename);
 void write_end(void);
-void write_statements(struct statement_list* list);
-void write_statement(struct statement_node* node);
+void write_statements(struct statement_list *list);
+void write_statement(struct statement_node *node);
 
-#define DECLARE_WRITE_FUNC(s) void write_##s(struct s* s);
+#define DECLARE_WRITE_FUNC(s) void write_##s(struct s *s);
 
 /* please use semicolons after the macros */
 DECLARE_WRITE_FUNC(call_function);

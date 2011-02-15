@@ -7,9 +7,9 @@
  * See also: DEFINE_NEW_FUNC in new.c
  *
  * Example: 
- * struct statement_node* new_get_value(struct get_value* get_value);
+ * struct statement_node *new_get_value(struct get_value *get_value);
  */
-#define DECLARE_NEW_FUNC(s) struct statement_node* new_##s(struct s* s);
+#define DECLARE_NEW_FUNC(s) struct statement_node *new_##s(struct s *s);
 
 /* please use semicolons on the macros */
 DECLARE_NEW_FUNC(call_function);

@@ -7,9 +7,9 @@
 #include <sys/types.h>
 #include <string.h>
 
-static FILE* fin;
+static FILE *fin;
 
-void read_prepare(char* filename) {
+void read_prepare(char *filename) {
     if(filename == NULL) {
         fin = stdin;
         return;
@@ -28,9 +28,9 @@ void read_end(void) {
     }
 }
 
-struct statement_list* read_statements() {
-    struct statement_list* list = xmalloc(sizeof(struct statement_list));
-    struct statement_node* node;
+struct statement_list *read_statements() {
+    struct statement_list *list = xmalloc(sizeof(struct statement_list));
+    struct statement_node *node;
 
     node = read_statement();
     if(node->type != TYPE_START) {
@@ -50,11 +50,11 @@ struct statement_list* read_statements() {
     return list;
 }
 
-struct statement_node* read_statement() {
+struct statement_node *read_statement() {
     int type;
     fread(&type, sizeof(int), 1, fin);
 
-    struct statement_node* node;
+    struct statement_node *node;
 
     switch(type) {
         case TYPE_START:
@@ -105,15 +105,15 @@ struct statement_node* read_statement() {
     exit(1);
 }
 
-struct call_function* read_call_function() {
+struct call_function *read_call_function() {
     size_t size;
     fread(&size, sizeof(size_t), 1, fin);
 
-    struct call_function* call_function = 
+    struct call_function *call_function = 
         xmalloc(sizeof(struct call_function));
     
     /* make sure to include room for the \0 at end of string */
-    call_function->identifier = xmalloc(sizeof(char) * (size + 1));
+    call_function->identifier = xmalloc(sizeof(char)  *(size + 1));
     fread(call_function->identifier, sizeof(char), size, fin);
     call_function->identifier[size] = '\0';
 
@@ -122,14 +122,14 @@ struct call_function* read_call_function() {
     return call_function;
 }
 
-struct set_variable* read_set_variable() {
+struct set_variable *read_set_variable() {
     size_t size;
     fread(&size, sizeof(size_t), 1, fin);
 
-    struct set_variable* set_variable = xmalloc(sizeof(struct set_variable));
+    struct set_variable *set_variable = xmalloc(sizeof(struct set_variable));
 
     /* make sure to include room for the \0 at end of string */
-    set_variable->identifier = xmalloc(sizeof(char) * (size + 1));
+    set_variable->identifier = xmalloc(sizeof(char)  *(size + 1));
     fread(set_variable->identifier, sizeof(char), size, fin);
     set_variable->identifier[size] = '\0';
 
@@ -138,30 +138,30 @@ struct set_variable* read_set_variable() {
     return set_variable;
 }
 
-struct get_variable* read_get_variable() {
+struct get_variable *read_get_variable() {
     size_t size;
     fread(&size, sizeof(size_t), 1, fin);
 
-    struct get_variable* get_variable = xmalloc(sizeof(struct get_variable));
+    struct get_variable *get_variable = xmalloc(sizeof(struct get_variable));
 
     /* make sure to include room for the \0 at end of string */
-    get_variable->identifier = xmalloc(sizeof(char) * (size + 1));
+    get_variable->identifier = xmalloc(sizeof(char)  *(size + 1));
     fread(get_variable->identifier, sizeof(char), size, fin);
     get_variable->identifier[size] = '\0';
 
     return get_variable;
 }
 
-struct get_value* read_get_value() {
-    struct get_value* get_value = xmalloc(sizeof(struct get_value));
+struct get_value *read_get_value() {
+    struct get_value *get_value = xmalloc(sizeof(struct get_value));
 
     fread(&(get_value->val), sizeof(int), 1, fin);
 
     return get_value;
 }
 
-struct add* read_add() {
-    struct add* add = xmalloc(sizeof(struct add));
+struct add *read_add() {
+    struct add *add = xmalloc(sizeof(struct add));
 
     add->expr_left = read_statement();
     add->expr_right = read_statement();
@@ -169,8 +169,8 @@ struct add* read_add() {
     return add;
 }
 
-struct subtract* read_subtract() {
-    struct subtract* subtract = xmalloc(sizeof(struct subtract));
+struct subtract *read_subtract() {
+    struct subtract *subtract = xmalloc(sizeof(struct subtract));
 
     subtract->expr_left = read_statement();
     subtract->expr_right = read_statement();
@@ -178,8 +178,8 @@ struct subtract* read_subtract() {
     return subtract;
 }
 
-struct multiply* read_multiply() {
-    struct multiply* multiply = xmalloc(sizeof(struct multiply));
+struct multiply *read_multiply() {
+    struct multiply *multiply = xmalloc(sizeof(struct multiply));
 
     multiply->expr_left = read_statement();
     multiply->expr_right = read_statement();
@@ -187,16 +187,16 @@ struct multiply* read_multiply() {
     return multiply;
 }
 
-struct parens* read_parens() {
-    struct parens* parens = xmalloc(sizeof(struct parens));
+struct parens *read_parens() {
+    struct parens *parens = xmalloc(sizeof(struct parens));
 
     parens->expr = read_statement();
 
     return parens;
 }
 
-struct compare_g* read_compare_g() {
-    struct compare_g* compare_g = xmalloc(sizeof(struct compare_g));
+struct compare_g *read_compare_g() {
+    struct compare_g *compare_g = xmalloc(sizeof(struct compare_g));
 
     compare_g->expr_left = read_statement();
     compare_g->expr_right = read_statement();
@@ -204,8 +204,8 @@ struct compare_g* read_compare_g() {
     return compare_g;
 }
 
-struct compare_ge* read_compare_ge() {
-    struct compare_ge* compare_ge = xmalloc(sizeof(struct compare_ge));
+struct compare_ge *read_compare_ge() {
+    struct compare_ge *compare_ge = xmalloc(sizeof(struct compare_ge));
 
     compare_ge->expr_left = read_statement();
     compare_ge->expr_right = read_statement();
@@ -213,8 +213,8 @@ struct compare_ge* read_compare_ge() {
     return compare_ge;
 }
 
-struct compare_l* read_compare_l() {
-    struct compare_l* compare_l = xmalloc(sizeof(struct compare_l));
+struct compare_l *read_compare_l() {
+    struct compare_l *compare_l = xmalloc(sizeof(struct compare_l));
 
     compare_l->expr_left = read_statement();
     compare_l->expr_right = read_statement();
@@ -222,8 +222,8 @@ struct compare_l* read_compare_l() {
     return compare_l;
 }
 
-struct compare_le* read_compare_le() {
-    struct compare_le* compare_le = xmalloc(sizeof(struct compare_le));
+struct compare_le *read_compare_le() {
+    struct compare_le *compare_le = xmalloc(sizeof(struct compare_le));
 
     compare_le->expr_left = read_statement();
     compare_le->expr_right = read_statement();
@@ -231,8 +231,8 @@ struct compare_le* read_compare_le() {
     return compare_le;
 }
 
-struct compare_e* read_compare_e() {
-    struct compare_e* compare_e = xmalloc(sizeof(struct compare_e));
+struct compare_e *read_compare_e() {
+    struct compare_e *compare_e = xmalloc(sizeof(struct compare_e));
 
     compare_e->expr_left = read_statement();
     compare_e->expr_right = read_statement();
@@ -240,8 +240,8 @@ struct compare_e* read_compare_e() {
     return compare_e;
 }
 
-struct compare_ne* read_compare_ne() {
-    struct compare_ne* compare_ne = xmalloc(sizeof(struct compare_ne));
+struct compare_ne *read_compare_ne() {
+    struct compare_ne *compare_ne = xmalloc(sizeof(struct compare_ne));
 
     compare_ne->expr_left = read_statement();
     compare_ne->expr_right = read_statement();
@@ -249,8 +249,8 @@ struct compare_ne* read_compare_ne() {
     return compare_ne;
 }
 
-struct if_statement* read_if_statement() {
-    struct if_statement* if_statement = xmalloc(sizeof(struct if_statement));
+struct if_statement *read_if_statement() {
+    struct if_statement *if_statement = xmalloc(sizeof(struct if_statement));
 
     if_statement->expr = read_statement();
     if_statement->statements = read_statements();
@@ -258,8 +258,8 @@ struct if_statement* read_if_statement() {
     return if_statement;
 }
 
-struct while_loop* read_while_loop() {
-    struct while_loop* while_loop = xmalloc(sizeof(struct while_loop));
+struct while_loop *read_while_loop() {
+    struct while_loop *while_loop = xmalloc(sizeof(struct while_loop));
 
     while_loop->expr = read_statement();
     while_loop->statements = read_statements();
@@ -267,8 +267,8 @@ struct while_loop* read_while_loop() {
     return while_loop;
 }
 
-struct for_loop* read_for_loop() {
-    struct for_loop* for_loop = xmalloc(sizeof(struct for_loop));
+struct for_loop *read_for_loop() {
+    struct for_loop *for_loop = xmalloc(sizeof(struct for_loop));
 
     for_loop->initial_statement = read_statement();
     for_loop->expr = read_statement();

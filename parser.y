@@ -9,15 +9,15 @@
 #include "xmalloc.h"
 #include "mode.h"
 
-struct statement_list* statement_list;
+struct statement_list *statement_list;
 %}
 
 %union {
     int int_val;
     char char_val;
-    char* string_val;
-    struct statement_node* statement_node_val;
-    struct statement_list* statement_list_val;
+    char *string_val;
+    struct statement_node *statement_node_val;
+    struct statement_list *statement_list_val;
 }
 
 %token <string_val> T_IDENTIFIER
@@ -70,7 +70,7 @@ incomplete_statements:
 
 statement:
     T_PRINT '(' expression ')' {
-        struct call_function* call = xmalloc(sizeof(struct call_function));
+        struct call_function *call = xmalloc(sizeof(struct call_function));
         call->identifier = "print";
         call->args = xmalloc(sizeof(struct statement_node));
         call->args[0] = *$3;
@@ -79,7 +79,7 @@ statement:
     }
     |
     T_IDENTIFIER '=' expression {
-        struct set_variable* s = xmalloc(sizeof(struct set_variable));
+        struct set_variable *s = xmalloc(sizeof(struct set_variable));
         s->identifier = $1;
         s->expr = $3;
 
@@ -89,7 +89,7 @@ statement:
 
 block:
     T_IF '(' expression ')' '{' statements '}' {
-        struct if_statement* i = xmalloc(sizeof(struct if_statement));
+        struct if_statement *i = xmalloc(sizeof(struct if_statement));
         i->expr = $3;
         i->statements = $6;
 
@@ -97,7 +97,7 @@ block:
     }
     |
     T_WHILE '(' expression ')' '{' statements '}' {
-        struct while_loop* w = xmalloc(sizeof(struct while_loop));
+        struct while_loop *w = xmalloc(sizeof(struct while_loop));
         w->expr = $3;
         w->statements = $6;
 
@@ -105,7 +105,7 @@ block:
     }
     |
     T_FOR '(' statement ';' expression ';' statement ')' '{' statements '}' {
-        struct for_loop* f = xmalloc(sizeof(struct for_loop));
+        struct for_loop *f = xmalloc(sizeof(struct for_loop));
         f->initial_statement = $3;
         f->expr = $5;
         f->iterator_statement = $7;
@@ -117,21 +117,21 @@ block:
 
 expression:
     T_INTEGER {
-        struct get_value* g = xmalloc(sizeof(struct get_value));
+        struct get_value *g = xmalloc(sizeof(struct get_value));
         g->val = $1;
 
         $$ = new_get_value(g);
     }
     |
     T_IDENTIFIER {
-        struct get_variable* g = xmalloc(sizeof(struct get_variable));
+        struct get_variable *g = xmalloc(sizeof(struct get_variable));
         g->identifier = $1;
 
         $$ = new_get_variable(g);
     }
     |
     expression '+' expression {
-        struct add* a  = xmalloc(sizeof(struct add));
+        struct add *a  = xmalloc(sizeof(struct add));
         a->expr_left = $1;
         a->expr_right = $3;
 
@@ -139,7 +139,7 @@ expression:
     }
     |
     expression '-' expression {
-        struct subtract* s = xmalloc(sizeof(struct subtract));
+        struct subtract *s = xmalloc(sizeof(struct subtract));
         s->expr_left = $1;
         s->expr_right = $3;
 
@@ -147,7 +147,7 @@ expression:
     }
     |
     expression '*' expression {
-        struct multiply* m = xmalloc(sizeof(struct multiply));
+        struct multiply *m = xmalloc(sizeof(struct multiply));
         m->expr_left = $1;
         m->expr_right = $3;
 
@@ -157,7 +157,7 @@ expression:
     comparison
     |
     '(' expression ')' {
-        struct parens* p = xmalloc(sizeof(struct parens));
+        struct parens *p = xmalloc(sizeof(struct parens));
         p->expr = $2;
 
         $$ = new_parens(p);
@@ -166,7 +166,7 @@ expression:
 
 comparison:
     expression T_COMPARE_G expression {
-        struct compare_g* c = xmalloc(sizeof(struct compare_g));
+        struct compare_g *c = xmalloc(sizeof(struct compare_g));
         c->expr_left = $1;
         c->expr_right = $3;
 
@@ -174,7 +174,7 @@ comparison:
     }
     |
     expression T_COMPARE_GE expression {
-        struct compare_ge* c = xmalloc(sizeof(struct compare_ge));
+        struct compare_ge *c = xmalloc(sizeof(struct compare_ge));
         c->expr_left = $1;
         c->expr_right = $3;
 
@@ -182,7 +182,7 @@ comparison:
     }
     |
     expression T_COMPARE_L expression {
-        struct compare_l* c = xmalloc(sizeof(struct compare_l));
+        struct compare_l *c = xmalloc(sizeof(struct compare_l));
         c->expr_left = $1;
         c->expr_right = $3;
 
@@ -190,7 +190,7 @@ comparison:
     }
     |
     expression T_COMPARE_LE expression {
-        struct compare_le* c = xmalloc(sizeof(struct compare_le));
+        struct compare_le *c = xmalloc(sizeof(struct compare_le));
         c->expr_left = $1;
         c->expr_right = $3;
 
@@ -198,7 +198,7 @@ comparison:
     }
     |
     expression T_COMPARE_E expression {
-        struct compare_e* c = xmalloc(sizeof(struct compare_e));
+        struct compare_e *c = xmalloc(sizeof(struct compare_e));
         c->expr_left = $1;
         c->expr_right = $3;
 
@@ -206,7 +206,7 @@ comparison:
     }
     |
     expression T_COMPARE_NE expression {
-        struct compare_ne* c = xmalloc(sizeof(struct compare_ne));
+        struct compare_ne *c = xmalloc(sizeof(struct compare_ne));
         c->expr_left = $1;
         c->expr_right = $3;
 
@@ -216,15 +216,15 @@ comparison:
 
 %%
 
-yyerror(const char* str) {
+yyerror(const char *str) {
     fprintf(stderr, "Error: %s\n", str);
     exit(1);
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char* *argv) {
     enum mode m = MODE_INTERPRET;
-    char* outfile = NULL;
-    char* infile = NULL;
+    char *outfile = NULL;
+    char *infile = NULL;
     if(argc >= 2) {
         if(strcmp(argv[1], "-c") == 0) {
             m = MODE_COMPILE;
@@ -245,7 +245,7 @@ int main(int argc, char** argv) {
     /* read data from binary or text */
     if(m == MODE_INTERPRET || m == MODE_COMPILE) {
         if(infile != NULL) {
-            FILE* fin = fopen(infile, "r");
+            FILE *fin = fopen(infile, "r");
             if(fin == NULL) {
                 fprintf(stderr, "Error: Couldn't open file\n");
                 exit(1);
