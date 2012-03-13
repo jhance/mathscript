@@ -1,0 +1,1 @@
+script: touch make.conf && make
